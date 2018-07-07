@@ -9,3 +9,4 @@ node_modules
 **/.vscode
 .idea/*
 **/.idea/*
+package-lock.json
