@@ -12,11 +12,11 @@ required: true
 },
 
 rules: {
-suffix: [String], 
-prefix: [String],
-median: [String],
-homophones:[String]
+suffixes: {type: [String]},
+prefixes: {type: [String]},
+medial: {type: [String]},
+homophones:{type: [String]}
 }
-})
+});
 
-module.exports = mongoose.model('words', WordSchema)
+module.exports = mongoose.model('words', WordSchema);
