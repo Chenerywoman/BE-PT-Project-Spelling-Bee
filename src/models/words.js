@@ -11,7 +11,7 @@ required: true
 
 },
 
-rules: {
+categories: {
 suffixes: {type: [String]},
 prefixes: {type: [String]},
 medials: {type: [String]},
