@@ -1,10 +1,10 @@
-const {words, prefixes, suffixes, medial} = require('./data/devData/index');
+const {words, prefixes, suffixes, medials} = require('./data/devData/index');
 const dataMaker = require('./dataMaker');
 const mongoose = require('mongoose');
 const url = require('../config/index');
 const {seed} = require('./seed');
 
-const wordData = dataMaker(words, prefixes, suffixes, medial);
+const wordData = dataMaker(words, prefixes, suffixes, medials);
 
 mongoose.connect(url, { useNewUrlParser: true })
 .then(() => seed(wordData))
