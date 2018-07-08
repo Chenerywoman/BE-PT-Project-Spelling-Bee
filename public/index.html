@@ -9,8 +9,13 @@
         <h2>api/words</h2>
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words</span></span></li> 
-            <li>Returns an object containing an array of word objects.</li>
-            <li>Each word contains a rules object with four categories: prefixes, suffixes, medials & homophones. </li>
+            <li>Returns an object containing an array of word objects containing a rules object with four categories: prefixes, suffixes, medials & homophones.</li>
+        </ul>
+        <h2>api/words/prefixes</h2>
+        <ul>
+            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/prefixes</span></span></li> 
+            <li></li>
+            <li>With a prefix query e.g <span class="route">/api/words/prefixes?prefix=anti</span> returns an object with an array of word objects where the prefixes array contains the query string. </li>
         </ul>
         
     </p>
