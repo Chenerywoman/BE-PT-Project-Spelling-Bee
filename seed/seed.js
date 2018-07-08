@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Word = require('../models/words');
+const Word = require('../src/models/words');
 
 exports.seed = (wordsData) => {
 
