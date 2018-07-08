@@ -65,6 +65,22 @@ describe('API Spelling Bee', () => {
     });
 });
 
+    describe('API requests to api/words/medials', () => {
+    it('GETs all words from api/words/medials which match query string', () => {
+        return supertest
+            .get('/api/words/medials')
+            .query({medial: 'sc'})
+            .expect(200)
+            .then(res => {
+                const { words } = res.body;
+                expect(words.length).to.equal(4);
+                expect(words[0].word).to.equal('cresent');
+                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+            });
+    });
+});
+
 
 
 
