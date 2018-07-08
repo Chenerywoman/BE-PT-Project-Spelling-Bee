@@ -19,6 +19,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words', () => {
+
         it('GETs all words from api/words', () => {
             return supertest
                 .get('/api/words')
@@ -27,24 +28,23 @@ describe('API Spelling Bee', () => {
                     const { words } = res.body;
                     expect(words.length).to.equal(53);
                     expect(words[0].word).to.equal(wordDocs[0].word);
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'rules');
-                    expect(words[0].rules).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
 
-
-
-
-
-
+        it('GETs all words from api/words/prefixes', () => {
+            return supertest
+                .get('/api/words/prefixes')
+                .query({prefix: 'pos'})
+                .expect(200)
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('position');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
     });
-
-
-
-
-
-
-
-
-
 });
