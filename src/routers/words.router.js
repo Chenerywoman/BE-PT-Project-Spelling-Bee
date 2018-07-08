@@ -5,9 +5,9 @@ const {getWords, getSuffixes, getPrefixes, getMedials, getHomophones, getFree, g
 
 router.get('/', getWords);
 
-// router.get('/suffixes/:suffix', getSuffixes);
+router.get('/prefixes', getPrefixes);
 
-// router.get('/prefixes/:prefix', getPrefixes);
+// router.get('/suffixes', getSuffixes);
 
 // router.get('./medials/:medial', getMedials);
 
