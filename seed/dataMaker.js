@@ -16,7 +16,7 @@ const dataMaker = (wordList, prefixesList, suffixesList, medialList) => {
 
     return filteredWords.reduce((acc, word, index) => {
 
-        acc.push({ word: word, rules: {suffixes: [], prefixes: [], medial: [], homophones: [] }});
+        acc.push({ word: word, rules: {suffixes: [], prefixes: [], medials: [], homophones: [] }});
 
         prefixesList.map((prefix) => {
             if (word.startsWith(prefix)) {
@@ -33,7 +33,7 @@ const dataMaker = (wordList, prefixesList, suffixesList, medialList) => {
         medialList.map((medial) => {
             const num = word.search(medial);
             if (num > 0 && num < word.length - 1) {
-                acc[index].rules.medial.push(medial);
+                acc[index].rules.medials.push(medial);
             }
         });
 
@@ -44,7 +44,6 @@ const dataMaker = (wordList, prefixesList, suffixesList, medialList) => {
         for (let key in reversedHomophones) {
             if (key === word) acc[index].rules.homophones.push(reversedHomophones[key]);
         }
-
         return acc;
     }, []);
 };
