@@ -16,33 +16,33 @@ const dataMaker = (wordList, prefixesList, suffixesList, medialList) => {
 
     return filteredWords.reduce((acc, word, index) => {
 
-        acc.push({ word: word, rules: {suffixes: [], prefixes: [], medials: [], homophones: [] }});
+        acc.push({ word: word, categories: {suffixes: [], prefixes: [], medials: [], homophones: [] }});
 
         prefixesList.map((prefix) => {
             if (word.startsWith(prefix)) {
-                acc[index].rules.prefixes.push(prefix);
+                acc[index].categories.prefixes.push(prefix);
             }
         });
 
         suffixesList.map((suffix) => {
             if (word.endsWith(suffix)) {
-                acc[index].rules.suffixes.push(suffix);
+                acc[index].categories.suffixes.push(suffix);
             }
         });
 
         medialList.map((medial) => {
             const num = word.search(medial);
             if (num > 0 && num < word.length - 1) {
-                acc[index].rules.medials.push(medial);
+                acc[index].categories.medials.push(medial);
             }
         });
 
         for (let key in homophones) {
-            if (key === word) acc[index].rules.homophones.push(homophones[key]);
+            if (key === word) acc[index].categories.homophones.push(homophones[key]);
         }
 
         for (let key in reversedHomophones) {
-            if (key === word) acc[index].rules.homophones.push(reversedHomophones[key]);
+            if (key === word) acc[index].categories.homophones.push(reversedHomophones[key]);
         }
         return acc;
     }, []);
