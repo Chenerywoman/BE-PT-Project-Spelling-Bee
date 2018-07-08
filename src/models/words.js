@@ -14,7 +14,7 @@ required: true
 rules: {
 suffixes: {type: [String]},
 prefixes: {type: [String]},
-medial: {type: [String]},
+medials: {type: [String]},
 homophones:{type: [String]}
 }
 });
