@@ -7,7 +7,7 @@ router.get('/', getWords);
 
 router.get('/prefixes', getPrefixes);
 
-// router.get('/suffixes', getSuffixes);
+router.get('/suffixes', getSuffixes);
 
 // router.get('./medials/:medial', getMedials);
 

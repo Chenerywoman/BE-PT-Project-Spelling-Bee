@@ -19,7 +19,6 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words', () => {
-
         it('GETs all words from api/words', () => {
             return supertest
                 .get('/api/words')
@@ -32,19 +31,46 @@ describe('API Spelling Bee', () => {
                     expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
-
-        it('GETs all words from api/words/prefixes', () => {
-            return supertest
-                .get('/api/words/prefixes')
-                .query({prefix: 'pos'})
-                .expect(200)
-                .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(4);
-                    expect(words[0].word).to.equal('position');
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                });
-        });
     });
+
+    describe('API requests to api/words/prefixes', () => {
+    it('GETs all words from api/words/prefixes which match query string', () => {
+        return supertest
+            .get('/api/words/prefixes')
+            .query({prefix: 'pos'})
+            .expect(200)
+            .then(res => {
+                const { words } = res.body;
+                expect(words.length).to.equal(4);
+                expect(words[0].word).to.equal('position');
+                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+            });
+    });
+});
+
+    describe('API requests to api/words/suffixes', () => {
+    it('GETs all words from api/words/suffixes which match query string', () => {
+        return supertest
+            .get('/api/words/suffixes')
+            .query({suffix: 'ly'})
+            .expect(200)
+            .then(res => {
+                const { words } = res.body;
+                expect(words.length).to.equal(4);
+                expect(words[0].word).to.equal('comically');
+                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+            });
+    });
+});
+
+
+
+
+
+
+
+
+
 });

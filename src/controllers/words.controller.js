@@ -1,6 +1,6 @@
-// getSuffixes, getMedials, getHomophones, getFree, getMixed
+// getMedials, getHomophones, getFree, getMixed
 
-const {findAllWords, findPrefixes, findSuffixes,findMedials, findHomophones, findFree, findMixed} = require('../queries/words.queries');
+const {findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, findMixed} = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
@@ -18,5 +18,18 @@ exports.getPrefixes = (req, res, next) => {
         if (err.status === 404) return next(err);
         else return next({ status: 500, controller: 'words' });
       });
-}
+};
+
+exports.getSuffixes = (req, res, next) => {
+    const {suffix} = req.query;
+    console.log('suffix', suffix)
+    return findSuffixes(suffix)
+    .then(words => {
+        res.status(200).send({words});
+    })
+    .catch(err => {
+        if (err.status === 404) return next(err);
+        else return next({ status: 500, controller: 'words' });
+      });
+};
 
