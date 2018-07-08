@@ -8,7 +8,7 @@
     "lint": "eslint ./",
     "dev": "node server.js",
     "seed": "node ./src/data/seed.js",
-    "seedDev": "NODE_ENV=dev node data/devSeed.js"
+    "seedDev": "NODE_ENV=dev node ./seed/devSeed.js"
   },
   "author": "",
   "license": "ISC",
