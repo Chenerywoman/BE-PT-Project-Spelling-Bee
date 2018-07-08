@@ -5,7 +5,7 @@ h1 {
 }
 
 h2 {
-    color: rgb(241, 10, 10)
+    color: rgb(241, 10, 10);
 }
 
 body {
@@ -18,16 +18,24 @@ ul {
 
 .api {
     font-size: 1.25em;
+    font-weight: bold
 }
 
 .endpoint {
     background-color: lightcyan;
+    font-weight: bold
 }
 
 .http {
-    color: rgb(64, 181, 83)
+    color: rgb(53, 82, 58);
+    font-weight: bold
 }
  
 .route {
-    color: darkblue
+    color: darkblue;
+    font-weight: bold
+}
+
+.listItem {
+    font-size: 1.25rem
 }
