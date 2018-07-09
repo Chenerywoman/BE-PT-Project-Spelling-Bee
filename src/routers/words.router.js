@@ -11,9 +11,9 @@ router.get('/suffixes', getSuffixes);
 
 router.get('/medials', getMedials);
 
-// router.get('./homophones/:homophone', getHomophones);
+router.get('/homophones', getHomophones);
 
-// router.get('./mixed', getMixed);
+// router.get('/mixed', getMixed);
 
 // router.get('/free', getFree)
 

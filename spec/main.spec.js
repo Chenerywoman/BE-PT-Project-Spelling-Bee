@@ -34,7 +34,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/prefixes', () => {
-        it('GETs all words from api/words/prefixes which match query string', () => {
+        it('GETs all words from api/words/prefixes which match the query string', () => {
             return supertest
                 .get('/api/words/prefixes')
                 .query({ prefix: 'pos' })
@@ -64,7 +64,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/suffixes', () => {
-        it('GETs all words from api/words/suffixes which match query string', () => {
+        it('GETs all words from api/words/suffixes which match the query string', () => {
             return supertest
                 .get('/api/words/suffixes')
                 .query({ suffix: 'ly' })
@@ -94,7 +94,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/medials', () => {
-        it('GETs all words from api/words/medials which match query string', () => {
+        it('GETs all words from api/words/medials which match the query string', () => {
             return supertest
                 .get('/api/words/medials')
                 .query({ medial: 'sc' })
@@ -122,4 +122,36 @@ describe('API Spelling Bee', () => {
                 .then(res => expect(res.body.error).to.equal('medial banana not found'));
         });
     });
+
+    describe('API requests to api/words/homophones', () => {
+        it('GETs all words from api/words/homophones which match query string', () => {
+            return supertest
+                .get('/api/words/homophones')
+                .query({ homophone: 'brake' })
+                .expect(200)
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(1);
+                    expect(words[0].word).to.equal('break');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
+        it('returns a 400 message when the user inputs a query string where the key is not "homophone"', () => {
+            return supertest
+                .get('/api/words/homophones')
+                .query({ banana: 'brake' })
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?homophone=brake"'));
+        });
+        it('returns a 404 message when the user inputs a homophone not contained in the database', () => {
+            return supertest
+                .get('/api/words/homophones')
+                .query({ homophone: 'banana' })
+                .expect(404)
+                .then(res => expect(res.body.error).to.equal('homophone banana not found'));
+        });
+    });
+
+  
 });

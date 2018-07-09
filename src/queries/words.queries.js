@@ -9,3 +9,5 @@ exports.findPrefixes = (prefix) => Word.find({'categories.prefixes': prefix}).le
 exports.findSuffixes = (suffix) => Word.find({'categories.suffixes': suffix}).lean();
 
 exports.findMedials = (medial) => Word.find({'categories.medials': medial}).lean();
+
+exports.findHomophones = (homophone) => Word.find({'categories.homophones': homophone}).lean();

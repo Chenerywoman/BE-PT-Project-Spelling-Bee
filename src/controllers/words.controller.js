@@ -1,4 +1,4 @@
-// getMedials, getHomophones, getFree, getMixed
+//  getFree, getMixed
 
 const { findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, findMixed } = require('../queries/words.queries');
 
@@ -45,6 +45,21 @@ exports.getMedials = (req, res, next) => {
     return findMedials(medial)
         .then(words => {
             if (!words.length) throw {status: 404, message: `medial ${medial} not found`};
+            else return res.status(200).send({ words });
+        })
+        .catch(err => {
+            if (err.status === 404) return next(err);
+            return next({ status: 500, controller: 'words' });
+        });
+};
+
+exports.getHomophones = (req, res, next) => {
+    const key = Object.keys(req.query)[0];
+    const { homophone } = req.query;
+    if (key !== 'homophone') throw {status: 400, message:`${key} is an invalid query string key - valid format is "?homophone=brake"`};
+    return findHomophones(homophone)
+        .then(words => {
+            if (!words.length) throw {status: 404, message: `homophone ${homophone} not found`};
             else return res.status(200).send({ words });
         })
         .catch(err => {
