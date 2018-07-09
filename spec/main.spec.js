@@ -25,7 +25,7 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { words } = res.body;
-                    expect(words.length).to.equal(53);
+                    expect(words.length).to.equal(54);
                     expect(words[0].word).to.equal(wordDocs[0].word);
                     expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
                     expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
@@ -40,11 +40,11 @@ describe('API Spelling Bee', () => {
                 .query({ prefix: 'pos' })
                 .expect(200)
                 .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(4);
-                    expect(words[0].word).to.equal('position');
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { prefixes } = res.body;
+                    expect(prefixes.length).to.equal(4);
+                    expect(prefixes[0].word).to.equal('position');
+                    expect(prefixes[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(prefixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "prefix"', () => {
@@ -70,11 +70,11 @@ describe('API Spelling Bee', () => {
                 .query({ suffix: 'ly' })
                 .expect(200)
                 .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(4);
-                    expect(words[0].word).to.equal('comically');
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { suffixes } = res.body;
+                    expect(suffixes.length).to.equal(4);
+                    expect(suffixes[0].word).to.equal('comically');
+                    expect(suffixes[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(suffixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "suffix"', () => {
@@ -100,11 +100,11 @@ describe('API Spelling Bee', () => {
                 .query({ medial: 'sc' })
                 .expect(200)
                 .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(4);
-                    expect(words[0].word).to.equal('crescent');
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { medials } = res.body;
+                    expect(medials.length).to.equal(4);
+                    expect(medials[0].word).to.equal('crescent');
+                    expect(medials[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(medials[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "medial"', () => {
@@ -130,11 +130,11 @@ describe('API Spelling Bee', () => {
                 .query({ homophone: 'brake' })
                 .expect(200)
                 .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(1);
-                    expect(words[0].word).to.equal('break');
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { homophones } = res.body;
+                    expect(homophones.length).to.equal(1);
+                    expect(homophones[0].word).to.equal('break');
+                    expect(homophones[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(homophones[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "homophone"', () => {
@@ -153,5 +153,23 @@ describe('API Spelling Bee', () => {
         });
     });
 
-  
+    describe ('API requests to api/words/freestyle', () => {
+        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
+            return supertest
+            .get('/api/words/freestyle')
+            .expect(200)
+            .then(res => {
+                const {freestyle} = res.body;
+                expect (freestyle.length).to.equal(1);
+                expect(freestyle[0].word).to.equal('banana');
+                expect(freestyle[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+            });
+        });
+    });
+
+
+
+
+
 });

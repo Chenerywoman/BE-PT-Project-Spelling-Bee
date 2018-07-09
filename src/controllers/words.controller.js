@@ -1,4 +1,4 @@
-//  getFree, getMixed
+//  getMixed
 
 const { findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, findMixed } = require('../queries/words.queries');
 
@@ -13,9 +13,9 @@ exports.getPrefixes = (req, res, next) => {
     const { prefix } = req.query;
     if (key !== 'prefix') throw {status: 400, message:`${key} is an invalid query string key - valid format is "?prefix=anti"`};
     return findPrefixes(prefix)
-        .then(words => {
-            if (!words.length) throw {status: 404, message: `prefix ${prefix} not found`};
-            else return res.status(200).send({ words });
+        .then(prefixes => {
+            if (!prefixes.length) throw {status: 404, message: `prefix ${prefix} not found`};
+            else return res.status(200).send({ prefixes });
         })
         .catch(err => {
             if (err.status === 400 || err.status === 404) return next(err);
@@ -28,9 +28,9 @@ exports.getSuffixes = (req, res, next) => {
     const { suffix } = req.query;
     if (key !== 'suffix') throw {status: 400, message:`${key} is an invalid query string key - valid format is "?suffix=ing"`};
     return findSuffixes(suffix)
-        .then(words => {
-            if (!words.length) throw {status: 404, message: `suffix ${suffix} not found`};
-            else return res.status(200).send({ words });
+        .then(suffixes => {
+            if (!suffixes.length) throw {status: 404, message: `suffix ${suffix} not found`};
+            else return res.status(200).send({ suffixes });
         })
         .catch(err => {
             if (err.status === 400 || err.status === 404) return next(err);
@@ -43,9 +43,9 @@ exports.getMedials = (req, res, next) => {
     const { medial } = req.query;
     if (key !== 'medial') throw {status: 400, message:`${key} is an invalid query string key - valid format is "?medial=sc"`};
     return findMedials(medial)
-        .then(words => {
-            if (!words.length) throw {status: 404, message: `medial ${medial} not found`};
-            else return res.status(200).send({ words });
+        .then(medials => {
+            if (!medials.length) throw {status: 404, message: `medial ${medial} not found`};
+            else return res.status(200).send({ medials });
         })
         .catch(err => {
             if (err.status === 404) return next(err);
@@ -58,13 +58,19 @@ exports.getHomophones = (req, res, next) => {
     const { homophone } = req.query;
     if (key !== 'homophone') throw {status: 400, message:`${key} is an invalid query string key - valid format is "?homophone=brake"`};
     return findHomophones(homophone)
-        .then(words => {
-            if (!words.length) throw {status: 404, message: `homophone ${homophone} not found`};
-            else return res.status(200).send({ words });
+        .then(homophones => {
+            if (!homophones.length) throw {status: 404, message: `homophone ${homophone} not found`};
+            else return res.status(200).send({ homophones });
         })
         .catch(err => {
             if (err.status === 404) return next(err);
             return next({ status: 500, controller: 'words' });
         });
+};
+
+exports.getFree = (req, res, next) => {
+return findFree()
+.then(freestyle => res.status(200).send({freestyle}))
+.catch(() => next({status: 500, controller: 'words'}));
 };
 

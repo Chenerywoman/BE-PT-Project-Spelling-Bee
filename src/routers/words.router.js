@@ -13,6 +13,8 @@ router.get('/medials', getMedials);
 
 router.get('/homophones', getHomophones);
 
+router.get('/freestyle', getFree);
+
 // router.get('/mixed', getMixed);
 
 // router.get('/free', getFree)
