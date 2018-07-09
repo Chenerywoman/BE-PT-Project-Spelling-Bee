@@ -34,59 +34,92 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/prefixes', () => {
-    it('GETs all words from api/words/prefixes which match query string', () => {
-        return supertest
-            .get('/api/words/prefixes')
-            .query({prefix: 'pos'})
-            .expect(200)
-            .then(res => {
-                const { words } = res.body;
-                expect(words.length).to.equal(4);
-                expect(words[0].word).to.equal('position');
-                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-            });
+        it('GETs all words from api/words/prefixes which match query string', () => {
+            return supertest
+                .get('/api/words/prefixes')
+                .query({ prefix: 'pos' })
+                .expect(200)
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('position');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
+        it('returns a 400 message when the user inputs a query string where the key is not "prefix"', () => {
+            return supertest
+                .get('/api/words/prefixes')
+                .query({ banana: 'anti' })
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?prefix=anti"'));
+        });
+        it('returns a 404 message when the user inputs a prefix not contained in the database', () => {
+            return supertest
+                .get('/api/words/prefixes')
+                .query({ prefix: 'banana' })
+                .expect(404)
+                .then(res => expect(res.body.error).to.equal('prefix banana not found'));
+        });
     });
-});
 
     describe('API requests to api/words/suffixes', () => {
-    it('GETs all words from api/words/suffixes which match query string', () => {
-        return supertest
-            .get('/api/words/suffixes')
-            .query({suffix: 'ly'})
-            .expect(200)
-            .then(res => {
-                const { words } = res.body;
-                expect(words.length).to.equal(4);
-                expect(words[0].word).to.equal('comically');
-                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-            });
+        it('GETs all words from api/words/suffixes which match query string', () => {
+            return supertest
+                .get('/api/words/suffixes')
+                .query({ suffix: 'ly' })
+                .expect(200)
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('comically');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
+        it('returns a 400 message when the user inputs a query string where the key is not "suffix"', () => {
+            return supertest
+                .get('/api/words/suffixes')
+                .query({ banana: 'ing' })
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?suffix=ing"'));
+        });
+        it('returns a 404 message when the user inputs a suffix not contained in the database', () => {
+            return supertest
+                .get('/api/words/suffixes')
+                .query({ suffix: 'banana' })
+                .expect(404)
+                .then(res => expect(res.body.error).to.equal('suffix banana not found'));
+        });
     });
-});
 
     describe('API requests to api/words/medials', () => {
-    it('GETs all words from api/words/medials which match query string', () => {
-        return supertest
-            .get('/api/words/medials')
-            .query({medial: 'sc'})
-            .expect(200)
-            .then(res => {
-                const { words } = res.body;
-                expect(words.length).to.equal(4);
-                expect(words[0].word).to.equal('cresent');
-                expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
-                expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-            });
+        it('GETs all words from api/words/medials which match query string', () => {
+            return supertest
+                .get('/api/words/medials')
+                .query({ medial: 'sc' })
+                .expect(200)
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('crescent');
+                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
+        it('returns a 400 message when the user inputs a query string where the key is not "medial"', () => {
+            return supertest
+                .get('/api/words/medials')
+                .query({ banana: 'sc' })
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?medial=sc"'));
+        });
+        it('returns a 404 message when the user inputs a medial not contained in the database', () => {
+            return supertest
+                .get('/api/words/medials')
+                .query({ medial: 'banana' })
+                .expect(404)
+                .then(res => expect(res.body.error).to.equal('medial banana not found'));
+        });
     });
-});
-
-
-
-
-
-
-
-
-
 });

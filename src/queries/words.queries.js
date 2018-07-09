@@ -8,7 +8,4 @@ exports.findPrefixes = (prefix) => Word.find({'categories.prefixes': prefix}).le
 
 exports.findSuffixes = (suffix) => Word.find({'categories.suffixes': suffix}).lean();
 
-exports.findMedials = (medial) => {
-    console.log('medial', medial)
-   return  Word.find({'categories.medials': medial}).lean();
-}
+exports.findMedials = (medial) => Word.find({'categories.medials': medial}).lean();
