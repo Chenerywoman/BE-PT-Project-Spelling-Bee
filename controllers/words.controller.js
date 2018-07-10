@@ -115,7 +115,8 @@ exports.postNewWord = (req, res, next) => {
             return res.status(201).send({ new_word: word })
         })
         .catch((err) => {
-            if (err.status === 400) return next(err);
+            if (err.name === 'MongoError' && err.code === 11000) {return next({status: 400, message: `${req.body.word} already exists in the database`})}
+            else if (err.status === 400) return next(err);
             else return next({ status: 500, controller: 'words' });
         });
 };
