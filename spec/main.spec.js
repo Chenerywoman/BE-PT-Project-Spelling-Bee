@@ -78,6 +78,17 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/suffixes', () => {
+        it('GETs the list of suffixes from api/words/suffixes', () => {
+            return supertest
+                .get('/api/words/suffixes')
+                .expect(200)
+                .then(res => {
+                    const { suffixes } = res.body;
+                    expect(suffixes[0].words.length).to.equal(5);
+                    expect(suffixes[0].words[0]).to.equal('ure');
+                    expect(suffixes[0]).to.have.keys('_id', 'words', 'category');
+                });
+        });
         it('GETs all words from api/words/suffixes which match the query string', () => {
             return supertest
                 .get('/api/words/suffixes')
