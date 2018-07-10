@@ -1,7 +1,7 @@
 //  getMixed
 
 const {findCategory} = require('../queries/categories.queries');
-const { findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, findMixed } = require('../queries/words.queries');
+const { findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, createWord} = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
@@ -104,15 +104,15 @@ exports.getFree = (req, res, next) => {
         .catch(() => next({ status: 500, controller: 'words' }));
 };
 
-// exports.getMixed = (req, res, next) => {
-// return findMixed()
-// const keys = Object.keys(req.query);
-// console.log('keys', keys)
-// if (!keys   )
-// .then(mixed => {
-
-//     return res.status(200).send({mixed})
-// });
-// .catch(() => next({status: 500, controller: 'words'}));
-// };
+exports.postNewWord = (req, res, next) => {
+    return createWord(req.body.word, req.body.categories.prefixes, req.body.categories.suffixes, req.body.categories.medials, req.body.categories.homophones)
+    .then(word => {
+        console.log('word', word)
+        return res.status(201).send({new_word: word})
+    })
+    .catch((err) => {
+        if (err.status === 400) return next(err);
+        else return next({status: 500, controller: 'words'});
+    });
+};
 
