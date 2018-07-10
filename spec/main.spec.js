@@ -95,6 +95,45 @@ describe('API Spelling Bee', () => {
                         expect(words[54].word).to.equal('banana');
                     }));
         });
+        it('casts a single string in the the categories object into an array containing the string', () => {
+            const newWord = { word: 'banana', categories: { prefixes: 'ban', suffixes: ['ana'], medials: [], homophones: [] } };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(201)
+                .then(res => {
+                    const { new_word } = res.body;
+                    expect(new_word.word).to.equal('banana');
+                    expect(Object.keys(new_word.categories).length).to.equal(4);
+                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                })
+                .then(() => supertest
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(55);
+                        expect(words[54].word).to.equal('banana');
+                    }));
+        });
+        it('returns with a 400 error message if an invalid key is passed in the body of the post request', () => {
+            const newWord = { word: 'banana', pineapple: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
+        });
+        it('returns with a 400 error message if an invalid key is passed as a category in the body of the post request', () => {
+            const newWord = { word: 'banana', categories: { pineapple: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
+        });      
     });
 
     describe('API requests to /api/words/prefixes', () => {
@@ -269,7 +308,7 @@ describe('API Spelling Bee', () => {
                 .then(res => {
                     const { freestyle } = res.body;
                     expect(freestyle.length).to.equal(1);
-                    expect(freestyle[0].word).to.equal('banana');
+                    expect(freestyle[0].word).to.equal('apple');
                     expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
                     expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
