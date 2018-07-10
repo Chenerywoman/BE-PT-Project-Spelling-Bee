@@ -1,32 +1,10 @@
 const { findCategory} = require('../queries/categories.queries');
-const { findAllWords, findSuffixes, findMedials, findHomophones, findFree, createWord } = require('../queries/words.queries');
+const { findAllWords, findMedials, findHomophones, findFree, createWord } = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
         .then(words => res.status(200).send({ words }))
         .catch(() => next({ status: 500, controller: 'words' }));
-};
-
-exports.getSuffixes = (req, res, next) => {
-    if (!Object.keys(req.query).length) {
-        const category = req.path.slice(1);
-        return findCategory(category)
-            .then(suffixes => res.status(200).send({ suffixes }))
-            .catch(() => next({ status: 500, controller: 'words' }));
-    } else {
-        const key = Object.keys(req.query)[0];
-        const { suffix } = req.query;
-        if (key !== 'suffix') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?suffix=ing"` };
-        return findSuffixes(suffix)
-            .then(suffixes => {
-                if (!suffixes.length) throw { status: 404, message: `suffix ${suffix} not found` };
-                else return res.status(200).send({ suffixes });
-            })
-            .catch(err => {
-                if (err.status === 400 || err.status === 404) return next(err);
-                else return next({ status: 500, controller: 'words' });
-            });
-    }
 };
 
 exports.getMedials = (req, res, next) => {

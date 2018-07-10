@@ -7,8 +7,6 @@ router.route('/')
 .post(postNewWord);
 // .delete(deleteWord);
 
-router.get('/suffixes', getSuffixes);
-
 router.get('/medials', getMedials);
 
 router.get('/homophones', getHomophones);

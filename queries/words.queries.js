@@ -2,8 +2,6 @@ const Word = require('../models/words.model');
 
 exports.findAllWords = () => Word.find().select('-__v').lean();
 
-exports.findSuffixes = (suffix) => Word.find({'categories.suffixes': suffix}).select('-__v').lean();
-
 exports.findMedials = (medial) => Word.find({'categories.medials': medial}).select('-__v').lean();
 
 exports.findHomophones = (homophone) => Word.find({'categories.homophones': homophone}).select('-__v').lean();
