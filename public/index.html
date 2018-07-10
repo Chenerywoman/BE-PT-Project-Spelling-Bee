@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <link rel='stylesheet' type='text/css' href='main.css'>
 <html>
+
 <body>
 
     <h1>Spelling Bee: API routes</h1>
@@ -8,56 +9,123 @@
 
         <h2>api/words</h2>
         <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words</span></span></li> 
-            <li class="listItem">Returns an object containing an array of word objects which each contain the word and a categories object with four arrays: prefixes, suffixes, medials & homophones.</li>
-            <li class="api"><span class="endpoint"><span class="http">POST</span> <span class="route">/api/words</span></span></li> 
-            <li class="listItem">Posts a word object to the database. This requires a JSON body with the following structure: {"word": "pineapple", "categories": {"prefixes" : ["pine"], "suffixes": ["le"], "medials: [], "homophones": []}}</li>
-        </ul>
-        <h2>api/prefixes</h2>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/prefixes</span></span></li> 
-            <li class="listItem">Returns an object with an array of prefixes.</li>
-        </ul>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/prefixes?prefix={prefix}</span></span></li> 
-            <li class="listItem">With a prefix query e.g <span class="query">/api/prefixes?prefix=anti</span> returns an object with an array of word objects where the prefixes array contains the query string. </li>
-        </ul>
-        <h2>api/suffixes</h2>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/suffixes</span></span></li> 
-            <li class="listItem">Returns an object with an array of suffixes.</li>
-        </ul>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/suffixes?suffix={suffix}</span></span></li> 
-            <li class="listItem">With a suffix query e.g <span class="query">/api/suffixes?suffix=ly</span> returns an object with an array of word objects where the suffixes array contains the query string. </li>
+            <li class="api">
+                <span class="endpoint">
+                    <span class="http">GET</span>
+                    <span class="route">/api/words</span>
+                </span>
+            </li>
+            <li class="listItem">Returns an object containing an array of word objects which each contain the word and a categories object with
+                four arrays: prefixes, suffixes, medials & homophones.</li>
+            <li class="api">
+                <span class="endpoint">
+                    <span class="http">POST</span>
+                    <span class="route">/api/words</span>
+                </span>
+            </li>
+            <li class="listItem">Posts a word object to the database. This requires a JSON body with the following structure: {"word": "pineapple",
+                "categories": {"prefixes" : ["pine"], "suffixes": ["le"], "medials: [], "homophones": []}}</li>
         </ul>
     </p>
-        <h2>api/words/medials</h2>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/medials</span></span></li> 
-            <li class="listItem">Returns an object with an array of medials.</li>
-        </ul>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/medials?medial={}</span></span></li> 
-            <li class="listItem">With a medial query e.g <span class="query">/api/words/medials?medial=sc</span> returns an object with an array of word objects where the medials array contains the query string. </li>
-        </ul>
+    <h2>api/words/freestyle</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/words/freestyle</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of words where all four categories of arrays (prefixes, suffixes, medials & homophones)
+            are empty.</li>
+    </ul>
+    </p>
+    <h2>api/prefixes</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/prefixes</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of prefixes.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/prefixes?prefix={prefix}</span>
+            </span>
+        </li>
+        <li class="listItem">With a prefix query e.g
+            <span class="query">/api/prefixes?prefix=anti</span> returns an object with an array of word objects where the prefixes array contains
+            the query string. </li>
+    </ul>
+    <h2>api/suffixes</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/suffixes</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of suffixes.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/suffixes?suffix={suffix}</span>
+            </span>
+        </li>
+        <li class="listItem">With a suffix query e.g
+            <span class="query">/api/suffixes?suffix=ly</span> returns an object with an array of word objects where the suffixes array contains
+            the query string. </li>
+    </ul>
+    </p>
+    <h2>api/medials</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/medials</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of medials.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/medials?medial={}</span>
+            </span>
+        </li>
+        <li class="listItem">With a medial query e.g
+            <span class="query">/api/medials?medial=sc</span> returns an object with an array of word objects where the medials array contains
+            the query string. </li>
+    </ul>
     </p>
     </p>
-        <h2>api/words/homphones</h2>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/homphones</span></span></li> 
-            <li class="listItem">Returns an object with an array of homophones.</li>
-        </ul>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/homophones?homophone={}</span></span></li> 
-            <li class="listItem">With a homophone query e.g <span class="query">/api/words/homophones?homophone=break</span> returns an object with an array of word objects where the homophones array contains the query string. </li>
-        </ul>
-    </p>
-        <h2>api/words/freestyle</h2>
-        <ul>
-            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/freestyle</span></span></li> 
-            <li class="listItem">Returns an object with an array of words where all four categories arrays (prefixes, suffixes, medials & homophones) are empty.</li>
-        </ul>
-    </p>
+    <h2>api/homophones</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/homophones</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of homophones.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/words/homophones?homophone={}</span>
+            </span>
+        </li>
+        <li class="listItem">With a homophone query e.g
+            <span class="query">/api/words/homophones?homophone=break</span> returns an object with an array of word objects where the homophones
+            array contains the query string. </li>
+    </ul>
 </body>
+
 </html>
