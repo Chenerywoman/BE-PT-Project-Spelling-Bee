@@ -21,8 +21,32 @@ describe('API Spelling Bee', () => {
         mongoose.disconnect();
     });
 
-    describe('API requests to api/words', () => {
-        it('GETs all words from api/words', () => {
+    describe('API requests to /api', () => {
+        it('GETs an html page with a list of routes from /api', () => {
+            return supertest
+                .get('/api')
+                .expect(200);
+        });
+        it('returns a 404 message if /api is not requested at the root', () => {
+            return supertest
+                .get('/banana')
+                .expect(404)
+                .then(res => {
+                    expect(res.body.message).to.equal('404 not found');
+                });
+        });
+        it('returns a 404 message if /api is not requested at the correct position in the path', () => {
+            return supertest
+                .get('/banana/words')
+                .expect(404)
+                .then(res => {
+                    expect(res.body.message).to.equal('404 not found');
+                });
+        });
+    });
+
+    describe('API requests to /api/words', () => {
+        it('GETs all words from /api/words', () => {
             return supertest
                 .get('/api/words')
                 .expect(200)
@@ -34,10 +58,26 @@ describe('API Spelling Bee', () => {
                     expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
+        it('returns a 404 message if /words is not requested at /api', () => {
+            return supertest
+                .get('/api/banana')
+                .expect(404)
+                .then(res => {
+                    expect(res.body.message).to.equal('404 not found');
+                });
+        });
+        it('returns a 404 message if one of prefixes/suffixes/medials/homophones/freestyle is not requested at /api/words', () => {
+            return supertest
+                .get('/api/words/banana')
+                .expect(404)
+                .then(res => {
+                    expect(res.body.message).to.equal('404 not found');
+                });
+        });
     });
 
-    describe('API requests to api/words/prefixes', () => {
-        it('GETs the list of prefixes from api/words/prefixes', () => {
+    describe('API requests to /api/words/prefixes', () => {
+        it('GETs the list of prefixes from /api/words/prefixes', () => {
             return supertest
                 .get('/api/words/prefixes')
                 .expect(200)
@@ -48,7 +88,7 @@ describe('API Spelling Bee', () => {
                     expect(prefixes[0]).to.have.keys('_id', 'words', 'category');
                 });
         });
-        it('GETs all words from api/words/prefixes which match a query string', () => {
+        it('GETs all words from /api/words/prefixes which match a query string', () => {
             return supertest
                 .get('/api/words/prefixes')
                 .query({ prefix: 'pos' })
@@ -77,7 +117,7 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/suffixes', () => {
+    describe('API requests to /api/words/suffixes', () => {
         it('GETs the list of suffixes from api/words/suffixes', () => {
             return supertest
                 .get('/api/words/suffixes')
@@ -89,7 +129,7 @@ describe('API Spelling Bee', () => {
                     expect(suffixes[0]).to.have.keys('_id', 'words', 'category');
                 });
         });
-        it('GETs all words from api/words/suffixes which match the query string', () => {
+        it('GETs all words from /api/words/suffixes which match the query string', () => {
             return supertest
                 .get('/api/words/suffixes')
                 .query({ suffix: 'ly' })
@@ -160,7 +200,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/homophones', () => {
-        it('GETs the list of homophones from api/words/homophones', () => {
+        it('GETs the list of homophones from /api/words/homophones', () => {
             return supertest
                 .get('/api/words/homophones')
                 .expect(200)
@@ -214,5 +254,4 @@ describe('API Spelling Bee', () => {
             });
         });
     });
-
 });
