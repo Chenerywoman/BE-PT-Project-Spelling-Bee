@@ -14,3 +14,4 @@ exports.findHomophones = (homophone) => Word.find({'categories.homophones': homo
 
 exports.findFree = () => Word.find({$and:[ {'categories.prefixes': {$size: 0}}, {'categories.suffixes': {$size: 0}}, {'categories.medials': {$size: 0}}, {'categories.homophones': {$size: 0}}]}).select('-__v').lean();
 
+exports.createWord = (word, prefixes, suffixes, medials, homophones) => Word.create({word, 'categories.prefixes': prefixes, 'categories.suffixes' : suffixes, 'categories.medials': medials, 'categories.homphones':homophones});
