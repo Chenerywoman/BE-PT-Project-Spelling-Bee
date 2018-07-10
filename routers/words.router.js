@@ -18,5 +18,6 @@ router.get('/freestyle', getFree);
 // router.get('/mixed', getMixed);
 
 // router.get('/free', getFree)
+// '/*'
 
 module.exports = router;

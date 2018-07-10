@@ -7,4 +7,6 @@ router.get('/', (req, res, next) => res.sendFile(path.join(__dirname, '..', '..'
 
 router.use('/words', wordsRouter);
 
+// '/*'
+
 module.exports = router;
