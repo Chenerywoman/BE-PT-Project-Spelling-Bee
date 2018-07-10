@@ -13,8 +13,8 @@ exports.getPrefixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         const category = req.path.slice(1);
         return findCategory(category)
-        .then(category => res.status(200).send({category}))
-        .catch(() => next({status:500, controller: 'category'}))
+        .then(prefixes => res.status(200).send({prefixes}))
+        .catch(() => next({status:500, controller: 'words'}));
 
     } else { 
     const key = Object.keys(req.query)[0];
