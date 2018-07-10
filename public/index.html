@@ -10,6 +10,8 @@
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words</span></span></li> 
             <li class="listItem">Returns an object containing an array of word objects which each contain the word and a categories object with four arrays: prefixes, suffixes, medials & homophones.</li>
+            <li class="api"><span class="endpoint"><span class="http">POST</span> <span class="route">/api/words</span></span></li> 
+            <li class="listItem">Posts a word object to the database. This requires a JSON body with the following structure: {"word": "pineapple", "categories": {"prefixes" : ["pine"], "suffixes": ["le"], "medials: [], "homophones": []}}</li>
         </ul>
         <h2>api/words/prefixes</h2>
         <ul>
