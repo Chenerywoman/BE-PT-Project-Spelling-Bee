@@ -30,7 +30,7 @@ describe('API Spelling Bee', () => {
                     const { words } = res.body;
                     expect(words.length).to.equal(54);
                     expect(words[0].word).to.equal(wordDocs[0].word);
-                    expect(words[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(words[0]).to.have.keys('_id', 'word', 'categories');
                     expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
@@ -57,7 +57,7 @@ describe('API Spelling Bee', () => {
                     const { prefixes } = res.body;
                     expect(prefixes.length).to.equal(4);
                     expect(prefixes[0].word).to.equal('position');
-                    expect(prefixes[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(prefixes[0]).to.have.keys('_id', 'word', 'categories');
                     expect(prefixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
@@ -98,7 +98,7 @@ describe('API Spelling Bee', () => {
                     const { suffixes } = res.body;
                     expect(suffixes.length).to.equal(4);
                     expect(suffixes[0].word).to.equal('comically');
-                    expect(suffixes[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(suffixes[0]).to.have.keys('_id', 'word', 'categories');
                     expect(suffixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
@@ -139,7 +139,7 @@ describe('API Spelling Bee', () => {
                     const { medials } = res.body;
                     expect(medials.length).to.equal(4);
                     expect(medials[0].word).to.equal('crescent');
-                    expect(medials[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(medials[0]).to.have.keys('_id', 'word', 'categories');
                     expect(medials[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
@@ -180,7 +180,7 @@ describe('API Spelling Bee', () => {
                     const { homophones } = res.body;
                     expect(homophones.length).to.equal(1);
                     expect(homophones[0].word).to.equal('break');
-                    expect(homophones[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                    expect(homophones[0]).to.have.keys('_id', 'word', 'categories');
                     expect(homophones[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
                 });
         });
@@ -209,7 +209,7 @@ describe('API Spelling Bee', () => {
                 const {freestyle} = res.body;
                 expect (freestyle.length).to.equal(1);
                 expect(freestyle[0].word).to.equal('banana');
-                expect(freestyle[0]).to.have.keys('_id', '__v', 'word', 'categories');
+                expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
                 expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
             });
         });
