@@ -119,6 +119,17 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/medials', () => {
+        it('GETs the list of medials from api/words/medials', () => {
+            return supertest
+                .get('/api/words/medials')
+                .expect(200)
+                .then(res => {
+                    const { medials } = res.body;
+                    expect(medials[0].words.length).to.equal(3);
+                    expect(medials[0].words[0]).to.equal('sc');
+                    expect(medials[0]).to.have.keys('_id', 'words', 'category');
+                });
+        });
         it('GETs all words from api/words/medials which match the query string', () => {
             return supertest
                 .get('/api/words/medials')
