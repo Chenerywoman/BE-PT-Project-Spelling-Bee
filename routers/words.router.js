@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-const {getWords, getPrefixes, getSuffixes, getMedials, getHomophones, getFree, getMixed} = require('../controllers/words.controller');
+const {getWords, getPrefixes, getSuffixes, getMedials, getHomophones, getFree, getMixed, postNewWord} = require('../controllers/words.controller');
 
-router.get('/', getWords);
+router.route('/')
+.get(getWords)
+.post(postNewWord);
 
 router.get('/prefixes', getPrefixes);
 
@@ -14,10 +16,5 @@ router.get('/medials', getMedials);
 router.get('/homophones', getHomophones);
 
 router.get('/freestyle', getFree);
-
-// router.get('/mixed', getMixed);
-
-// router.get('/free', getFree)
-// '/*'
 
 module.exports = router;
