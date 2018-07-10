@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const Word = require('../src/models/words');
+const Word = require('../src/models/words.model');
+const Category = require('../src/models/categories.model');
 
-exports.seed = (wordsData) => {
+exports.seed = (wordsData, categoriesData) => {
 
     return mongoose.connection.dropDatabase()
-        .then(() => Word.insertMany(wordsData));
+        .then(() => Promise.all([Word.insertMany(wordsData), Category.insertMany(categoriesData)]));
 };
