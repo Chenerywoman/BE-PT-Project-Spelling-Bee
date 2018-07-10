@@ -5,7 +5,7 @@ const express = require('express');
 const app = express();
 let url = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL : require('./config/index');
 const {json} = require('body-parser');
-const apiRouter = require('./src/routers/api.router.js');
+const apiRouter = require('./routers/api.router.js');
 
 mongoose.connect(url, { useNewUrlParser: true });
 
@@ -20,6 +20,8 @@ app.get('/', function(req, res) {
 app.use(express.static('public'));
 
 app.use('/api', apiRouter);
+
+// '/*'
 
 app.use((err, req, res, next) => {
 res.status !== 500
