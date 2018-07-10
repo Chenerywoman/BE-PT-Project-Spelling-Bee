@@ -55,6 +55,12 @@ exports.getSuffixes = (req, res, next) => {
 };
 
 exports.getMedials = (req, res, next) => {
+    if (!Object.keys(req.query).length) {
+        const category = req.path.slice(1);
+        return findCategory(category)
+        .then(medials => res.status(200).send({medials}))
+        .catch(() => next({status:500, controller: 'words'}));
+    } else { 
     const key = Object.keys(req.query)[0];
     const { medial } = req.query;
     if (key !== 'medial') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?medial=sc"` };
@@ -67,6 +73,7 @@ exports.getMedials = (req, res, next) => {
             if (err.status === 404) return next(err);
             return next({ status: 500, controller: 'words' });
         });
+    }
 };
 
 exports.getHomophones = (req, res, next) => {
