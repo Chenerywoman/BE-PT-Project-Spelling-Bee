@@ -5,7 +5,7 @@ const supertest = require('supertest')(server);
 const expect = require('chai').expect;
 const { seed } = require('../seed/seed');
 const { testWords, testPrefixes, testSuffixes, testMedials, testHomophones } = require('../seed/data/testData');
-const {wordsMaker, categoriesMaker} = require('../seed/dataMakers');
+const { wordsMaker, categoriesMaker } = require('../seed/dataMakers');
 const wordsToSeed = wordsMaker(testWords, testPrefixes, testSuffixes, testMedials);
 const categoriesToSeed = categoriesMaker(testPrefixes, testSuffixes, testMedials, testHomophones);
 
@@ -73,6 +73,27 @@ describe('API Spelling Bee', () => {
                 .then(res => {
                     expect(res.body.message).to.equal('404 not found');
                 });
+        });
+        it('POSTS a new word to /api/words', () => {
+            const newWord = { word: 'banana', categories: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(201)
+                .then(res => {
+                    const { new_word } = res.body;
+                    expect(new_word.word).to.equal('banana');
+                    expect(Object.keys(new_word.categories).length).to.equal(4);
+                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                })
+                .then(() => supertest
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(55);
+                        expect(words[54].word).to.equal('banana');
+                    }));
         });
     });
 
@@ -240,18 +261,18 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe ('API requests to api/words/freestyle', () => {
+    describe('API requests to api/words/freestyle', () => {
         it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
             return supertest
-            .get('/api/words/freestyle')
-            .expect(200)
-            .then(res => {
-                const {freestyle} = res.body;
-                expect (freestyle.length).to.equal(1);
-                expect(freestyle[0].word).to.equal('banana');
-                expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
-                expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-            });
+                .get('/api/words/freestyle')
+                .expect(200)
+                .then(res => {
+                    const { freestyle } = res.body;
+                    expect(freestyle.length).to.equal(1);
+                    expect(freestyle[0].word).to.equal('banana');
+                    expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
+                    expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
         });
     });
 });
