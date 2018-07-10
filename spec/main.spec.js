@@ -37,7 +37,18 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/prefixes', () => {
-        it('GETs all words from api/words/prefixes which match the query string', () => {
+        it('GETs the list of prefixes from api/words/prefixes', () => {
+            return supertest
+                .get('/api/words/prefixes')
+                .expect(200)
+                .then(res => {
+                    const { prefixes } = res.body;
+                    expect(prefixes[0].words.length).to.equal(5);
+                    expect(prefixes[0].words[0]).to.equal('im');
+                    expect(prefixes[0]).to.have.keys('_id', 'words', 'category');
+                });
+        });
+        it('GETs all words from api/words/prefixes which match a query string', () => {
             return supertest
                 .get('/api/words/prefixes')
                 .query({ prefix: 'pos' })
