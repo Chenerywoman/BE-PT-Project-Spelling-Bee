@@ -15,7 +15,7 @@ app.use(json());
 // app.use(cors());
 
 app.get('/', function(req, res) {
-    return res.status(200).send('please see /api for routes');
+    return res.status(200).send({message: 'please see /api for routes'});
 });
 
 app.use(express.static('public'));
