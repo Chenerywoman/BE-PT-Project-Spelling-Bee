@@ -1,33 +1,10 @@
 const { findCategory} = require('../queries/categories.queries');
-const { findAllWords, findPrefixes, findSuffixes, findMedials, findHomophones, findFree, createWord } = require('../queries/words.queries');
+const { findAllWords, findSuffixes, findMedials, findHomophones, findFree, createWord } = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
         .then(words => res.status(200).send({ words }))
         .catch(() => next({ status: 500, controller: 'words' }));
-};
-
-exports.getPrefixes = (req, res, next) => {
-    if (!Object.keys(req.query).length) {
-        const category = req.path.slice(1);
-        return findCategory(category)
-            .then(prefixes => res.status(200).send({ prefixes }))
-            .catch(() => next({ status: 500, controller: 'words' }));
-
-    } else {
-        const key = Object.keys(req.query)[0];
-        const { prefix } = req.query;
-        if (key !== 'prefix') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?prefix=anti"` };
-        return findPrefixes(prefix)
-            .then(prefixes => {
-                if (!prefixes.length) throw { status: 404, message: `prefix ${prefix} not found` };
-                else return res.status(200).send({ prefixes });
-            })
-            .catch(err => {
-                if (err.status === 400 || err.status === 404) return next(err);
-                else return next({ status: 500, controller: 'words' });
-            });
-    }
 };
 
 exports.getSuffixes = (req, res, next) => {
@@ -120,4 +97,10 @@ exports.postNewWord = (req, res, next) => {
             else return next({ status: 500, controller: 'words' });
         });
 };
+
+// exports.deleteWord = (req, res, next) => {
+//     return 
+    
+
+// }
 

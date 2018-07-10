@@ -151,10 +151,10 @@ describe('API Spelling Bee', () => {
     // });
 });
 
-    describe('API requests to /api/words/prefixes', () => {
-        it('GETs the list of prefixes from /api/words/prefixes', () => {
+    describe('API requests to /api/prefixes', () => {
+        it('GETs the list of prefixes from /api/prefixes', () => {
             return supertest
-                .get('/api/words/prefixes')
+                .get('/api/prefixes')
                 .expect(200)
                 .then(res => {
                     const { prefixes } = res.body;
@@ -163,9 +163,9 @@ describe('API Spelling Bee', () => {
                     expect(prefixes[0]).to.have.keys('_id', 'words', 'category');
                 });
         });
-        it('GETs all words from /api/words/prefixes which match a query string', () => {
+        it('GETs all words from /api/prefixes which match a query string', () => {
             return supertest
-                .get('/api/words/prefixes')
+                .get('/api/prefixes')
                 .query({ prefix: 'pos' })
                 .expect(200)
                 .then(res => {
@@ -178,14 +178,14 @@ describe('API Spelling Bee', () => {
         });
         it('returns a 400 message when the user inputs a query string where the key is not "prefix"', () => {
             return supertest
-                .get('/api/words/prefixes')
+                .get('/api/prefixes')
                 .query({ banana: 'anti' })
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?prefix=anti"'));
         });
         it('returns a 404 message when the user inputs a prefix not contained in the database', () => {
             return supertest
-                .get('/api/words/prefixes')
+                .get('/api/prefixes')
                 .query({ prefix: 'banana' })
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('prefix banana not found'));

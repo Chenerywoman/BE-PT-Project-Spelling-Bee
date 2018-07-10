@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
-const {getWords, getPrefixes, getSuffixes, getMedials, getHomophones, getFree, getMixed, postNewWord} = require('../controllers/words.controller');
+const {getWords, getSuffixes, getMedials, getHomophones, getFree, postNewWord, deleteWord} = require('../controllers/words.controller');
 
 router.route('/')
 .get(getWords)
 .post(postNewWord);
-
-router.get('/prefixes', getPrefixes);
+// .delete(deleteWord);
 
 router.get('/suffixes', getSuffixes);
 
