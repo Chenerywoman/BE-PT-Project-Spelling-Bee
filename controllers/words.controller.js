@@ -112,7 +112,7 @@ exports.postNewWord = (req, res, next) => {
 
     return createWord(req.body.word, req.body.categories.prefixes, req.body.categories.suffixes, req.body.categories.medials, req.body.categories.homophones)
         .then(word => {
-            return res.status(201).send({ new_word: word })
+            return res.status(201).send({ new_word: word });
         })
         .catch((err) => {
             if (err.name === 'MongoError' && err.code === 11000) {return next({status: 400, message: `${req.body.word} already exists in the database`})}
