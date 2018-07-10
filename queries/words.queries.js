@@ -1,7 +1,5 @@
 const Word = require('../models/words.model');
 
-// findMixed
-
 exports.findAllWords = () => Word.find().select('-__v').lean();
 
 exports.findPrefixes = (prefix) => Word.find({'categories.prefixes': prefix}).select('-__v').lean();
@@ -14,4 +12,4 @@ exports.findHomophones = (homophone) => Word.find({'categories.homophones': homo
 
 exports.findFree = () => Word.find({$and:[ {'categories.prefixes': {$size: 0}}, {'categories.suffixes': {$size: 0}}, {'categories.medials': {$size: 0}}, {'categories.homophones': {$size: 0}}]}).select('-__v').lean();
 
-exports.createWord = (word, prefixes, suffixes, medials, homophones) => Word.create({word, 'categories.prefixes': prefixes, 'categories.suffixes' : suffixes, 'categories.medials': medials, 'categories.homphones':homophones});
+exports.createWord = (word, prefixes, suffixes, medials, homophones) => Word.create({word, categories: {prefixes: prefixes, suffixes: suffixes, medials: medials, homophones :homophones}});
