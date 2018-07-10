@@ -4,15 +4,18 @@ const mongoose = require('mongoose');
 const supertest = require('supertest')(server);
 const expect = require('chai').expect;
 const { seed } = require('../seed/seed');
-const { testWords, testPrefixes, testSuffixes, testMedials } = require('../seed/data/testData');
-const dataMaker = require('../seed/dataMaker');
-const wordsToSeed = dataMaker(testWords, testPrefixes, testSuffixes, testMedials)
+const { testWords, testPrefixes, testSuffixes, testMedials, testHomophones } = require('../seed/data/testData');
+const {wordsMaker, categoriesMaker} = require('../seed/dataMakers');
+const wordsToSeed = wordsMaker(testWords, testPrefixes, testSuffixes, testMedials);
+const categoriesToSeed = categoriesMaker(testPrefixes, testSuffixes, testMedials, testHomophones);
 
 describe('API Spelling Bee', () => {
-    let wordDocs;
+    let wordDocs, categoriesDocs;
     beforeEach(() => {
-        return seed(wordsToSeed)
-            .then(words => wordDocs = words);
+        return seed(wordsToSeed, categoriesToSeed)
+            .then(data => {
+                [wordDocs, categoriesDocs] = data;
+            });
     });
     after(() => {
         mongoose.disconnect();
@@ -167,9 +170,5 @@ describe('API Spelling Bee', () => {
             });
         });
     });
-
-
-
-
 
 });
