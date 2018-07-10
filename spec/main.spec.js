@@ -160,6 +160,17 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/words/homophones', () => {
+        it('GETs the list of homophones from api/words/homophones', () => {
+            return supertest
+                .get('/api/words/homophones')
+                .expect(200)
+                .then(res => {
+                    const { homophones } = res.body;
+                    expect(homophones[0].words.length).to.equal(14);
+                    expect(homophones[0].words[0]).to.equal('accept');
+                    expect(homophones[0]).to.have.keys('_id', 'words', 'category');
+                });
+        });
         it('GETs all words from api/words/homophones which match query string', () => {
             return supertest
                 .get('/api/words/homophones')
