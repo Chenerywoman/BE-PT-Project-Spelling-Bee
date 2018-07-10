@@ -1,32 +1,10 @@
 const { findCategory} = require('../queries/categories.queries');
-const { findAllWords, findMedials, findHomophones, findFree, createWord } = require('../queries/words.queries');
+const { findAllWords, findHomophones, findFree, createWord } = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
         .then(words => res.status(200).send({ words }))
         .catch(() => next({ status: 500, controller: 'words' }));
-};
-
-exports.getMedials = (req, res, next) => {
-    if (!Object.keys(req.query).length) {
-        const category = req.path.slice(1);
-        return findCategory(category)
-            .then(medials => res.status(200).send({ medials }))
-            .catch(() => next({ status: 500, controller: 'words' }));
-    } else {
-        const key = Object.keys(req.query)[0];
-        const { medial } = req.query;
-        if (key !== 'medial') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?medial=sc"` };
-        return findMedials(medial)
-            .then(medials => {
-                if (!medials.length) throw { status: 404, message: `medial ${medial} not found` };
-                else return res.status(200).send({ medials });
-            })
-            .catch(err => {
-                if (err.status === 404) return next(err);
-                return next({ status: 500, controller: 'words' });
-            });
-    }
 };
 
 exports.getHomophones = (req, res, next) => {

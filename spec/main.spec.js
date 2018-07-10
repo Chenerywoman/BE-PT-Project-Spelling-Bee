@@ -233,10 +233,10 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/medials', () => {
-        it('GETs the list of medials from api/words/medials', () => {
+    describe('API requests to api/medials', () => {
+        it('GETs the list of medials from api/medials', () => {
             return supertest
-                .get('/api/words/medials')
+                .get('/api/medials')
                 .expect(200)
                 .then(res => {
                     const { medials } = res.body;
@@ -245,9 +245,9 @@ describe('API Spelling Bee', () => {
                     expect(medials[0]).to.have.keys('_id', 'words', 'category');
                 });
         });
-        it('GETs all words from api/words/medials which match the query string', () => {
+        it('GETs all words from /sapi/medials which match the query string', () => {
             return supertest
-                .get('/api/words/medials')
+                .get('/api/medials')
                 .query({ medial: 'sc' })
                 .expect(200)
                 .then(res => {
@@ -260,14 +260,14 @@ describe('API Spelling Bee', () => {
         });
         it('returns a 400 message when the user inputs a query string where the key is not "medial"', () => {
             return supertest
-                .get('/api/words/medials')
+                .get('/api/medials')
                 .query({ banana: 'sc' })
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?medial=sc"'));
         });
         it('returns a 404 message when the user inputs a medial not contained in the database', () => {
             return supertest
-                .get('/api/words/medials')
+                .get('/api/medials')
                 .query({ medial: 'banana' })
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('medial banana not found'));
