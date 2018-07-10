@@ -1,13 +1,14 @@
-const {words, prefixes, suffixes, medials} = require('./data/devData/index');
-const dataMaker = require('./dataMaker');
+const {words, prefixes, suffixes, medials, homophones} = require('./data/devData/index');
+const {wordsMaker, categoriesMaker} = require('./dataMakers');
 const mongoose = require('mongoose');
 const url = require('../config/index');
 const {seed} = require('./seed');
 
-const wordData = dataMaker(words, prefixes, suffixes, medials);
+const wordData = wordsMaker(words, prefixes, suffixes, medials);
+const categoriesData = categoriesMaker(prefixes, suffixes, medials, homophones);
 
 mongoose.connect(url, { useNewUrlParser: true })
-.then(() => seed(wordData))
+.then(() => seed(wordData, categoriesData))
 .then((() => {
     mongoose.disconnect();
     console.log('dev database seeded');
