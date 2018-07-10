@@ -151,6 +151,21 @@ describe('API Spelling Bee', () => {
     // });
 });
 
+describe('API requests to api/words/freestyle', () => {
+    it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
+        return supertest
+            .get('/api/words/freestyle')
+            .expect(200)
+            .then(res => {
+                const { freestyle } = res.body;
+                expect(freestyle.length).to.equal(1);
+                expect(freestyle[0].word).to.equal('apple');
+                expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
+                expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+            });
+    });
+});
+
     describe('API requests to /api/prefixes', () => {
         it('GETs the list of prefixes from /api/prefixes', () => {
             return supertest
@@ -315,18 +330,4 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/freestyle', () => {
-        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
-            return supertest
-                .get('/api/words/freestyle')
-                .expect(200)
-                .then(res => {
-                    const { freestyle } = res.body;
-                    expect(freestyle.length).to.equal(1);
-                    expect(freestyle[0].word).to.equal('apple');
-                    expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                });
-        });
-    });
 });
