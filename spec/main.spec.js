@@ -245,7 +245,7 @@ describe('API Spelling Bee', () => {
                     expect(medials[0]).to.have.keys('_id', 'words', 'category');
                 });
         });
-        it('GETs all words from /sapi/medials which match the query string', () => {
+        it('GETs all words from /api/medials which match the query string', () => {
             return supertest
                 .get('/api/medials')
                 .query({ medial: 'sc' })
@@ -274,10 +274,10 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/homophones', () => {
+    describe('API requests to api/homophones', () => {
         it('GETs the list of homophones from /api/words/homophones', () => {
             return supertest
-                .get('/api/words/homophones')
+                .get('/api/homophones')
                 .expect(200)
                 .then(res => {
                     const { homophones } = res.body;
@@ -288,7 +288,7 @@ describe('API Spelling Bee', () => {
         });
         it('GETs all words from api/words/homophones which match query string', () => {
             return supertest
-                .get('/api/words/homophones')
+                .get('/api/homophones')
                 .query({ homophone: 'brake' })
                 .expect(200)
                 .then(res => {
@@ -301,14 +301,14 @@ describe('API Spelling Bee', () => {
         });
         it('returns a 400 message when the user inputs a query string where the key is not "homophone"', () => {
             return supertest
-                .get('/api/words/homophones')
+                .get('/api/homophones')
                 .query({ banana: 'brake' })
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?homophone=brake"'));
         });
         it('returns a 404 message when the user inputs a homophone not contained in the database', () => {
             return supertest
-                .get('/api/words/homophones')
+                .get('/api/homophones')
                 .query({ homophone: 'banana' })
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('homophone banana not found'));
