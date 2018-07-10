@@ -5,10 +5,9 @@ const WordSchema = new Schema({
 
 word: {
 type: String, 
+required: true,
 unique: true, 
 lowercase: true,
-required: true
-
 },
 
 categories: {
