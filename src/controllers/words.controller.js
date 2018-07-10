@@ -33,6 +33,12 @@ exports.getPrefixes = (req, res, next) => {
 };
 
 exports.getSuffixes = (req, res, next) => {
+    if (!Object.keys(req.query).length) {
+        const category = req.path.slice(1);
+        return findCategory(category)
+        .then(suffixes => res.status(200).send({suffixes}))
+        .catch(() => next({status:500, controller: 'words'}));
+    } else { 
     const key = Object.keys(req.query)[0];
     const { suffix } = req.query;
     if (key !== 'suffix') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?suffix=ing"` };
@@ -45,6 +51,7 @@ exports.getSuffixes = (req, res, next) => {
             if (err.status === 400 || err.status === 404) return next(err);
             else return next({ status: 500, controller: 'words' });
         });
+    }
 };
 
 exports.getMedials = (req, res, next) => {
