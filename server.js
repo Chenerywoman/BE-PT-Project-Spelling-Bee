@@ -6,7 +6,6 @@ const app = express();
 let url = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL : require('./config/index');
 const {json} = require('body-parser');
 const apiRouter = require('./routers/api.router.js');
-const path = require('path');
 
 mongoose.connect(url, { useNewUrlParser: true });
 
