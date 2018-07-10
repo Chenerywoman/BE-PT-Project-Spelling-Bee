@@ -9,7 +9,7 @@
         <h2>api/words</h2>
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words</span></span></li> 
-            <li class="listItem">Returns an object containing an array of word objects containing a rules object with four categories: prefixes, suffixes, medials & homophones.</li>
+            <li class="listItem">Returns an object containing an array of word objects which each contain the word and a categories object with four arrays: prefixes, suffixes, medials & homophones.</li>
         </ul>
         <h2>api/words/prefixes</h2>
         <ul>
@@ -33,6 +33,10 @@
         <h2>api/words/medials</h2>
         <ul>
             <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/medials</span></span></li> 
+            <li class="listItem">Returns an object with an array of medials.</li>
+        </ul>
+        <ul>
+            <li class="api"><span class="endpoint"><span class="http">GET</span> <span class="route">/api/words/medials?medial={}</span></span></li> 
             <li class="listItem">With a medial query e.g <span class="query">/api/words/medials?medial=sc</span> returns an object with an array of word objects where the medials array contains the query string. </li>
         </ul>
     </p>
