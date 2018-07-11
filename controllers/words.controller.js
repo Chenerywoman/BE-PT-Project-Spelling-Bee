@@ -1,4 +1,4 @@
-const { findAllWords, findFree, createWord } = require('../queries/words.queries');
+const { findAllWords, findFree, createWord, checkforDuplicate } = require('../queries/words.queries');
 
 exports.getWords = (req, res, next) => {
     return findAllWords()
@@ -18,9 +18,13 @@ exports.postNewWord = (req, res, next) => {
     objectKeys.forEach((elem, ind) => { if (body[ind] !== elem) throw { status: 400, message: `${body[ind]} is an invalid key`}; });
     const categoryKeys = ['prefixes', 'suffixes', 'medials', 'homophones'];
     const categories = Object.keys(req.body.categories);
-    categoryKeys.forEach((elem, ind) => { if (categories[ind] !== elem) throw { status: 400, message: `${categories[ind]} is an invalid key` }; })
+    categoryKeys.forEach((elem, ind) => { if (categories[ind] !== elem) throw { status: 400, message: `${categories[ind]} is an invalid key` }; });
 
-    return createWord(req.body.word, req.body.categories.prefixes, req.body.categories.suffixes, req.body.categories.medials, req.body.categories.homophones)
+    return checkforDuplicate(req.body.word)
+    .then(word => {
+        if (word.length) {throw { status: 400, message: `${word[0].word} already exists in the database`};}
+        else {return createWord(req.body.word, req.body.categories.prefixes, req.body.categories.suffixes, req.body.categories.medials, req.body.categories.homophones);}
+    })
         .then(word => {
             return res.status(201).send({ new_word: word });
         })
