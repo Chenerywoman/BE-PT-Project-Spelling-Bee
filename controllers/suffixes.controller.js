@@ -5,7 +5,7 @@ exports.getSuffixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('suffixes')
             .then(suffixes => res.status(200).send({ suffixes }))
-            .catch(() => next({ status: 500, controller: 'words' }));
+            .catch(() => next({ status: 500, controller: 'suffixes' }));
     } else {
         const key = Object.keys(req.query)[0];
         const { suffix } = req.query;
@@ -17,7 +17,7 @@ exports.getSuffixes = (req, res, next) => {
             })
             .catch(err => {
                 if (err.status === 400 || err.status === 404) return next(err);
-                else return next({ status: 500, controller: 'words' });
+                else return next({ status: 500, controller: 'suffixes' });
             });
     }
 };
