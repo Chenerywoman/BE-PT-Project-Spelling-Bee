@@ -134,21 +134,21 @@ describe('API Spelling Bee', () => {
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
         });      
-    //     it('returns with a 400 error message if a duplicate word is passed in the body of a post request', () => {
-    //         const newAppleWord = { word: 'apple', categories: { prefixes: [], suffixes: [], medials: [], homophones: [] } };
-    //         return supertest
-    //             .post('/api/words')
-    //             .set('Accept', 'application/json')
-    //             .send(newAppleWord)
-    //             .expect(400)
-    //             .then(res => expect(res.body.error).to.equal('apple already exists in the database'))
-    //             .then(() => supertest
-    //             .get('/api/words')
-    //             .then(res => {
-    //                 const { words } = res.body;
-    //                 expect(words.length).to.equal(54);
-    //             }));     
-    // });
+        it('returns with a 400 error message if a duplicate word is passed in the body of a post request', () => {
+            const newAppleWord = { word: 'apple', categories: { prefixes: [], suffixes: [], medials: [], homophones: [] } };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newAppleWord)
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('apple already exists in the database'))
+                .then(() => supertest
+                .get('/api/words')
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(54);
+                }));     
+    });
 });
 
 describe('API requests to api/words/freestyle', () => {
