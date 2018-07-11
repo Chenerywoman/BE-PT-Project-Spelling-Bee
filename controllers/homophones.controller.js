@@ -5,7 +5,7 @@ exports.getHomophones = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('homophones')
             .then(homophones => res.status(200).send({ homophones }))
-            .catch(() => next({ status: 500, controller: 'words' }));
+            .catch(() => next({ status: 500, controller: 'homophones' }));
     } else {
         const key = Object.keys(req.query)[0];
         const { homophone } = req.query;
@@ -17,7 +17,7 @@ exports.getHomophones = (req, res, next) => {
             })
             .catch(err => {
                 if (err.status === 404) return next(err);
-                return next({ status: 500, controller: 'words' });
+                return next({ status: 500, controller: 'homophones' });
             });
     }
 };
