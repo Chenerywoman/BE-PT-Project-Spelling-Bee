@@ -133,7 +133,7 @@ describe('API Spelling Bee', () => {
                 .send(newWord)
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
-        });      
+        });
         it('returns with a 400 error message if a duplicate word is passed in the body of a post request', () => {
             const newAppleWord = { word: 'apple', categories: { prefixes: [], suffixes: [], medials: [], homophones: [] } };
             return supertest
@@ -143,14 +143,14 @@ describe('API Spelling Bee', () => {
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('apple already exists in the database'))
                 .then(() => supertest
-                .get('/api/words')
-                .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(54);
-                }));     
-    });
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(54);
+                    }));
+        });
         it('DELETEs a word & returns a copy of the deleted word when requested at /api/words', () => {
-            const wordToDelete = { word: 'apple'};
+            const wordToDelete = { word: 'apple' };
             return supertest
                 .delete('/api/words')
                 .set('Accept', 'application/json')
@@ -160,28 +160,28 @@ describe('API Spelling Bee', () => {
                     expect(res.body).to.eql({ delete_message: 'apple successfully deleted' });
                 })
                 .then(() => supertest
-                .get('/api/words')
-                .then(res => {
-                    const { words } = res.body;
-                    expect(words.length).to.equal(53);
-                }));     
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(53);
+                    }));
+        });
     });
-});
 
-describe('API requests to api/words/freestyle', () => {
-    it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
-        return supertest
-            .get('/api/words/freestyle')
-            .expect(200)
-            .then(res => {
-                const { freestyle } = res.body;
-                expect(freestyle.length).to.equal(1);
-                expect(freestyle[0].word).to.equal('apple');
-                expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
-                expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-            });
+    describe('API requests to api/words/freestyle', () => {
+        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
+            return supertest
+                .get('/api/words/freestyle')
+                .expect(200)
+                .then(res => {
+                    const { freestyle } = res.body;
+                    expect(freestyle.length).to.equal(1);
+                    expect(freestyle[0].word).to.equal('apple');
+                    expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
+                    expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                });
+        });
     });
-});
 
     describe('API requests to /api/prefixes', () => {
         it('GETs the list of prefixes from /api/prefixes', () => {
