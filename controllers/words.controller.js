@@ -34,22 +34,19 @@ exports.postNewWord = (req, res, next) => {
 };
 
 exports.removeWord = (req, res, next) => {
-    console.log('req.body', req.body);
     const word = req.body.word;
+    if (!word) throw { status: 400, message: 'invalid delete request.' };
     return checkforWord(word)
     .then(checkedWord => {
-        console.log('checkedWord', checkedWord);
-        console.log('word', checkedWord[0].word);
         if (checkedWord.length && checkedWord[0].word === word) return deleteWord(word);
         else { throw { status: 404, message: `${word} does not exist in the database`}; }
     })
     .then(deleteResponse => {
-        console.log('res after delete', deleteResponse);
         if (deleteResponse.n === 1 && deleteResponse.ok === 1) return res.status(200).send({delete_message:`${word} successfully deleted`});
     })
     .catch(err => {
-        console.log('err', err);
-        if (err.status === 404) return next(err);
+        if (err.status === 400) return next(err);
+        else if (err.status === 404) return next(err);
         else return next ({status: 500, controller: 'words'});
     });
 };
