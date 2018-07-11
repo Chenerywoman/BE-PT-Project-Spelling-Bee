@@ -149,6 +149,23 @@ describe('API Spelling Bee', () => {
                     expect(words.length).to.equal(54);
                 }));     
     });
+        it('DELETEs a word & returns a copy of the deleted word when requested at /api/words', () => {
+            const wordToDelete = { word: 'apple'};
+            return supertest
+                .delete('/api/words')
+                .set('Accept', 'application/json')
+                .send(wordToDelete)
+                .expect(200)
+                .then(res => {
+                    expect(res.body).to.eql({ delete_message: 'apple successfully deleted' });
+                })
+                .then(() => supertest
+                .get('/api/words')
+                .then(res => {
+                    const { words } = res.body;
+                    expect(words.length).to.equal(53);
+                }));     
+    });
 });
 
 describe('API requests to api/words/freestyle', () => {
