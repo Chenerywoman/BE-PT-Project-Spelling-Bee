@@ -5,7 +5,7 @@ exports.getPrefixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('prefixes')
             .then(prefixes => res.status(200).send({ prefixes }))
-            .catch(() => next({ status: 500, controller: 'words' }));
+            .catch(() => next({ status: 500, controller: 'prefixes' }));
 
     } else {
         const key = Object.keys(req.query)[0];
@@ -18,7 +18,7 @@ exports.getPrefixes = (req, res, next) => {
             })
             .catch(err => {
                 if (err.status === 400 || err.status === 404) return next(err);
-                else return next({ status: 500, controller: 'words' });
+                else return next({ status: 500, controller: 'prefixes' });
             });
     }
 };
