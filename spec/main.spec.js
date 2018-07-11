@@ -166,6 +166,15 @@ describe('API Spelling Bee', () => {
                         expect(words.length).to.equal(53);
                     }));
         });
+        it('returns an appropriate error message to a DELETE request for a word that doesn\'t exist in the database', () => {
+            const wordToDelete = { word: 'banana' };
+            return supertest
+                .delete('/api/words')
+                .set('Accept', 'application/json')
+                .send(wordToDelete)
+                .expect(404)
+                .then(res => expect(res.body.error).to.equal('banana does not exist in the database'))
+        });
     });
 
     describe('API requests to api/words/freestyle', () => {
