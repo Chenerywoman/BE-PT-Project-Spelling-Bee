@@ -208,9 +208,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { prefixes } = res.body;
-                    expect(prefixes[0].words.length).to.equal(5);
-                    expect(prefixes[0].words[0]).to.equal('im');
-                    expect(prefixes[0]).to.have.keys('_id', 'words', 'category');
+                    expect(prefixes[0].letters.length).to.equal(5);
+                    expect(prefixes[0].letters[0]).to.equal('im');
+                    expect(prefixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
                 });
         });
         it('GETs all words from /api/prefixes which match a query string', () => {
@@ -249,9 +249,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { suffixes } = res.body;
-                    expect(suffixes[0].words.length).to.equal(5);
-                    expect(suffixes[0].words[0]).to.equal('ure');
-                    expect(suffixes[0]).to.have.keys('_id', 'words', 'category');
+                    expect(suffixes[0].letters.length).to.equal(5);
+                    expect(suffixes[0].letters[0]).to.equal('ure');
+                    expect(suffixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
                 });
         });
         it('GETs all words from /api/suffixes which match the query string', () => {
@@ -290,9 +290,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { medials } = res.body;
-                    expect(medials[0].words.length).to.equal(3);
-                    expect(medials[0].words[0]).to.equal('sc');
-                    expect(medials[0]).to.have.keys('_id', 'words', 'category');
+                    expect(medials[0].letters.length).to.equal(3);
+                    expect(medials[0].letters[0]).to.equal('sc');
+                    expect(medials[0]).to.have.keys('_id', 'letters', 'category', 'description');
                 });
         });
         it('GETs all words from /api/medials which match the query string', () => {
@@ -331,9 +331,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { homophones } = res.body;
-                    expect(homophones[0].words.length).to.equal(14);
-                    expect(homophones[0].words[0]).to.equal('accept');
-                    expect(homophones[0]).to.have.keys('_id', 'words', 'category');
+                    expect(homophones[0].letters.length).to.equal(14);
+                    expect(homophones[0].letters[0]).to.equal('accept');
+                    expect(homophones[0]).to.have.keys('_id', 'letters', 'category', 'description');
                 });
         });
         it('GETs all words from api/words/homophones which match query string', () => {
