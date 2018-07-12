@@ -1,7 +1,7 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 const mongoose = require('mongoose');
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 const app = express();
 let url = process.env.NODE_ENV === 'production' ? process.env.MONGO_URL : require('./config/index');
 const {json} = require('body-parser');
@@ -11,7 +11,7 @@ mongoose.connect(url, { useNewUrlParser: true });
 
 app.use(json());
 
-// app.use(cors());
+app.use(cors());
 
 app.get('/', function(req, res) {
     return res.status(200).send({message: 'please see /api for routes'});
