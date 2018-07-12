@@ -18,19 +18,19 @@ const wordsMaker = (wordList, prefixesList, suffixesList, medialsList) => {
 
         acc.push({ word: word, categories: { suffixes: [], prefixes: [], medials: [], homophones: [] } });
 
-        prefixesList.map((prefix) => {
+        prefixesList.letters.map((prefix) => {
             if (word.startsWith(prefix)) {
                 acc[index].categories.prefixes.push(prefix);
             }
         });
 
-        suffixesList.map((suffix) => {
+        suffixesList.letters.map((suffix) => {
             if (word.endsWith(suffix)) {
                 acc[index].categories.suffixes.push(suffix);
             }
         });
 
-        medialsList.map((medial) => {
+        medialsList.letters.map((medial) => {
             const num = word.search(medial);
             if (num > 0 && num < word.length - 1) {
                 acc[index].categories.medials.push(medial);
@@ -51,11 +51,10 @@ const wordsMaker = (wordList, prefixesList, suffixesList, medialsList) => {
 const categoriesMaker = (prefixesList, suffixesList, medialsList, homophonesList, prefixesDescription, suffixesDescription, medialsDescription, homophonesDescription) => {
     
     const names = ['prefixes', 'suffixes', 'medials', 'homophones']
-    const descriptions = [prefixesDescription, suffixesDescription, medialsDescription, homophonesDescription]
     const categories = [prefixesList, suffixesList, medialsList, homophonesList];
 
     return categories.reduce((acc, category, ind) => {
-        acc.push({ category: names[ind], words: category, description: descriptions[ind].description });
+        acc.push({ category: names[ind], letters: category.letters, description: category.description });
         return acc;
     }, []);
 };
