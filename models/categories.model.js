@@ -14,7 +14,7 @@ description: {
 type: String
 },
 
-words: {
+letters: {
 type: [String]
 }
 });
