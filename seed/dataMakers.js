@@ -1,6 +1,6 @@
 const { reverseObject } = require('./helpers');
 
-const wordsMaker = (wordList, prefixesList, suffixesList, medialList) => {
+const wordsMaker = (wordList, prefixesList, suffixesList, medialsList) => {
 
     const homophones = {
         accept: 'except', affect: 'effect', ball: 'bawl', berry: 'bury', brake: 'break', fair: 'fare', grate: 'great',
@@ -30,7 +30,7 @@ const wordsMaker = (wordList, prefixesList, suffixesList, medialList) => {
             }
         });
 
-        medialList.map((medial) => {
+        medialsList.map((medial) => {
             const num = word.search(medial);
             if (num > 0 && num < word.length - 1) {
                 acc[index].categories.medials.push(medial);
@@ -48,13 +48,14 @@ const wordsMaker = (wordList, prefixesList, suffixesList, medialList) => {
     }, []);
 };
 
-const categoriesMaker = (prefixesList, suffixesList, medialList, homophonesList) => {
-
-    const categories = [prefixesList, suffixesList, medialList, homophonesList];
+const categoriesMaker = (prefixesList, suffixesList, medialsList, homophonesList, prefixesDescription, suffixesDescription, medialsDescription, homophonesDescription) => {
+    
     const names = ['prefixes', 'suffixes', 'medials', 'homophones']
+    const descriptions = [prefixesDescription, suffixesDescription, medialsDescription, homophonesDescription]
+    const categories = [prefixesList, suffixesList, medialsList, homophonesList];
 
     return categories.reduce((acc, category, ind) => {
-        acc.push({ category: names[ind], words: category });
+        acc.push({ category: names[ind], words: category, description: descriptions[ind].description });
         return acc;
     }, []);
 };
