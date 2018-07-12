@@ -10,6 +10,10 @@ lowercase: true,
 required: true
 },
 
+description: {
+type: String
+},
+
 words: {
 type: [String]
 }
