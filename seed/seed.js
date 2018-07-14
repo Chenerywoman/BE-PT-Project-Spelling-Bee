@@ -10,9 +10,6 @@ return mongoose.connection.dropDatabase()
         yearsDocs.forEach(year => category.years.push(year.id));
        return category;
    });
-    // const categoriesDocs = categoriesData.map(category => {
-    //     return {...category, year: yearsDocs};
-    // });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
 })
 .then(([yearDocs, categoryDocs]) => {
@@ -27,11 +24,11 @@ const duplicateMedials = medialsData.reduce((acc, medial) => {
 prefixes.map(prefix => {
         yearDocs.forEach(year => prefix.years.push(year.id));
         duplicateMedials.forEach(duplicate => {
-             if (prefix.letters === duplicate) prefix.category.push('medials');
+             if (prefix.letters === duplicate) prefix.categories.push('medials');
          });
         categoryDocs.forEach(category => {
-            prefix.category.map((prefixCat, ind) => {
-                if (category.name === prefixCat) prefix.category.splice(ind, 1, category._id);
+            prefix.categories.map((prefixCat, ind) => {
+                if (category.name === prefixCat) prefix.categories.splice(ind, 1, category._id);
             });    
         });
     });
@@ -39,7 +36,7 @@ prefixes.map(prefix => {
 suffixes.map(suffix => {
     yearDocs.forEach(year => suffix.years.push(year.id));
     categoryDocs.forEach(category => {
-        if (category.name === suffix.category[0]) suffix.category.splice(0, 1, category._id);
+        if (category.name === suffix.categories[0]) suffix.categories.splice(0, 1, category._id);
     });
 });
 
@@ -53,7 +50,7 @@ const medials = partialsMaker(filteredMedials, 'medials');
 medials.map(medial => {
     yearDocs.forEach(year => medial.years.push(year.id));
     categoryDocs.forEach(category => {
-        if (category.name === medial.category[0]) medial.category.splice(0, 1, category._id);
+        if (category.name === medial.categories[0]) medial.categories.splice(0, 1, category._id);
     });
 });
   return Promise.all([yearDocs, categoryDocs, Partial.insertMany(prefixes), Partial.insertMany(suffixes), Partial.insertMany(medials)]);
