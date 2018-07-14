@@ -49,7 +49,6 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { words } = res.body;
-                    console.log('test', words[10].partials[0].letters)
                     expect(words.length).to.equal(54);
                     expect(words[10].word).to.equal(wordsDocs[10].word);
                     expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
