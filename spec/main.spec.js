@@ -267,7 +267,7 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/medials', () => {
-        it.only('GETs the list of medials from api/medials', () => {
+        it('GETs the list of medials from api/medials', () => {
             return supertest
                 .get('/api/medials')
                 .expect(200)
@@ -278,17 +278,21 @@ describe('API Spelling Bee', () => {
                     expect(medials[0]).to.have.keys('_id', 'letters', 'category', 'description', 'years');
                 });
         });
-        it('GETs all words from /api/medials which match the query string', () => {
+        it.only('GETs all words from /api/medials which match the query string', () => {
             return supertest
                 .get('/api/medials')
                 .query({ medial: 'sc' })
                 .expect(200)
                 .then(res => {
-                    const { medials } = res.body;
-                    expect(medials.length).to.equal(4);
-                    expect(medials[0].word).to.equal('crescent');
-                    expect(medials[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(medials[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+
+                    console.log('words in test', words.map(word => JSON.stringify(word.partials)));
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('crescent');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
+                    expect(words[0].partials[0].letters).to.equal('sc');
+                    expect(words[0].years[0].year).to.equal(3);
+
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "medial"', () => {
