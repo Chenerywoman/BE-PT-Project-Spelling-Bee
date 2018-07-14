@@ -6,10 +6,13 @@ exports.seed = (yearsData, categoriesData, prefixesData, suffixesData, medialsDa
 return mongoose.connection.dropDatabase()
 .then(() => Year.insertMany(yearsData))
 .then(yearsDocs => {
-    console.log('yearsDocs', yearsDocs)
     const categoriesDocs = categoriesData.map(category => {
-        return {...category, year: yearsDocs};
-    });
+        yearsDocs.forEach(year => category.years.push(year.id));
+       return category;
+   });
+    // const categoriesDocs = categoriesData.map(category => {
+    //     return {...category, year: yearsDocs};
+    // });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
 })
 .then(([yearDocs, categoryDocs]) => {
