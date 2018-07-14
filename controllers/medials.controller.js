@@ -26,7 +26,7 @@ exports.getMedials = (req, res, next) => {
                 else return res.status(200).send({ words });
             })
             .catch(err => {
-                if (err.status === 404) return next(err);
+                if (err.status === 400 || err.status === 404) return next(err);
                 return next({ status: 500, controller: 'medials' });
             });
     }
