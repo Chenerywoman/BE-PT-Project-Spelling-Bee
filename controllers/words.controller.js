@@ -25,27 +25,21 @@ exports.postNewWord = (req, res, next) => {
 
     return findYears(requestedYears)
         .then((years) => {
-            console.log('years back from find', years.length)
             if (!years) throw { status: 404, message: 'year(s) not found' };
             else if (requestedPartials.length) return Promise.all([years, findPostedPartials(requestedPartials)]);
             else return [years, requestedPartials];
         })
         .then(([years, partials]) => {
-            console.log('years', years.length)
             const yearsIds = years.map(year => year[0]._id);
-            console.log('yearsIds.length', yearsIds.length)
             const partialsIds = partials.map(partial => partial._id);
             return Promise.all([yearsIds, partialsIds, checkforWord(req.body.word)]);
         })
         .then(([yearsIds, partialsIds, word]) => {
-
-            console.log('yearsIds', yearsIds, 'partialsIds', partialsIds, 'word', word)
             if (word.length) { throw { status: 400, message: `${req.body.word} already exists in the database`}; }
             else { return createWord(req.body.word, partialsIds, yearsIds); }
         })
         .then(word => res.status(201).send({ new_word: word }))
         .catch((err) => {
-            console.log('err in catch block', err)
             if (err.name === 'MongoError' && err.code === 11000) { return next({ status: 400, message: `${req.body.word} already exists in the database` }) }
             else if (err.status === 400) return next(err);
             else return next({ status: 500, controller: 'words' });
