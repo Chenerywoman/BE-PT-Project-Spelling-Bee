@@ -1,6 +1,6 @@
 const { findCategory} = require('../queries/categories.queries');
 const { findMedials } = require('../queries/medials.queries');
-const {findPartialsByCategory} = require('../queries/partials.queries');
+const {findPartialsByCategory, findPartial} = require('../queries/partials.queries');
 
 exports.getMedials = (req, res, next) => {
     if (!Object.keys(req.query).length) {
@@ -15,12 +15,17 @@ exports.getMedials = (req, res, next) => {
         const key = Object.keys(req.query)[0];
         const { medial } = req.query;
         if (key !== 'medial') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?medial=sc"` };
-        return findMedials(medial)
-            .then(medials => {
-                if (!medials.length) throw { status: 404, message: `medial ${medial} not found` };
-                else return res.status(200).send({ medials });
+        else return findPartial(medial)
+        .then(medial => {
+            const medialId = medial[0]._id;
+            return findMedials(medialId);
+        })
+            .then(words => {
+                if (!words.length) throw { status: 404, message: `no words containing the medial ${medial} found` };
+                else return res.status(200).send({ words });
             })
             .catch(err => {
+                console.log('err in controller', err)
                 if (err.status === 404) return next(err);
                 return next({ status: 500, controller: 'medials' });
             });
