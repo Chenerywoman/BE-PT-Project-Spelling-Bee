@@ -82,7 +82,6 @@ describe('API Spelling Bee', () => {
                 .expect(201)
                 .then(res => {
                     const { new_word } = res.body;
-                    console.log('new_word', new_word)
                     expect(new_word.word).to.equal('banana');
                     expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
                 })
@@ -94,38 +93,23 @@ describe('API Spelling Bee', () => {
                         expect(words[54].word).to.equal('banana');
                     }));
         });
-        it.only('returns an appropriate error ', () => {
+        it('returns an appropriate error if an string is passed to partials instead of an array', () => {
             const newWord = { word: 'antidiluvial', partials: 'anti', years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
                 .send(newWord)
-                .expect(201)
-                .then(res => {
-                    const { new_word } = res.body;
-                    expect(new_word.word).to.equal('banana');
-                    expect(Object.keys(new_word.categories).length).to.equal(4);
-                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                })
+                .expect(400)
+                .then(res => expect(res.body.error).to.equal('please ensure partials & years are contained in an array'))
                 .then(() => supertest
                     .get('/api/words')
                     .then(res => {
                         const { words } = res.body;
-                        expect(words.length).to.equal(55);
-                        expect(words[54].word).to.equal('banana');
+                        expect(words.length).to.equal(54);
                     }));
         });
         it('returns with a 400 error message if an invalid key is passed in the body of the post request', () => {
-            const newWord = { word: 'banana', pineapple: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
-            return supertest
-                .post('/api/words')
-                .set('Accept', 'application/json')
-                .send(newWord)
-                .expect(400)
-                .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
-        });
-        it('returns with a 400 error message if an invalid key is passed as a category in the body of the post request', () => {
-            const newWord = { word: 'banana', categories: { pineapple: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+            const newWord = { word: 'banana', pineapple: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -134,7 +118,7 @@ describe('API Spelling Bee', () => {
                 .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
         });
         it('returns with a 400 error message if a duplicate word is passed in the body of a post request', () => {
-            const newAppleWord = { word: 'apple', categories: { prefixes: [], suffixes: [], medials: [], homophones: [] } };
+            const newAppleWord = { word: 'apple', partials: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -192,10 +176,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { freestyle } = res.body;
-                    expect(freestyle.length).to.equal(1);
-                    expect(freestyle[0].word).to.equal('apple');
-                    expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(freestyle.length).to.equal(12);
+                    expect(freestyle[0].word).to.equal('accept');
+                    expect(freestyle[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
         });
     });
@@ -207,9 +190,10 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { prefixes } = res.body;
-                    expect(prefixes[0].letters.length).to.equal(5);
-                    expect(prefixes[0].letters[0]).to.equal('im');
-                    expect(prefixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    console.log('prefixes', prefixes)
+                    expect(prefixes.length).to.equal(5);
+                    expect(prefixes[0].letters).to.equal('im');
+                    expect(prefixes[0]).to.have.keys('_id', 'letters', 'category', 'description', 'years');
                 });
         });
         it('GETs all words from /api/prefixes which match a query string', () => {
