@@ -10,19 +10,9 @@ const PartialSchema = new Schema({
         required: true
     },
 
-    // category: {
-    //     type: [Schema.Types.ObjectId],
-    //     ref: 'categories',
-    //     required: true
-    // },
+    categories: [{ type: Schema.Types.ObjectId, ref: 'categories', required: true }],
 
-    category: [{ type: Schema.Types.ObjectId, ref: 'categories', required: true }],
-
-    years: {
-        type: [Schema.Types.ObjectId],
-        ref: 'years',
-        required: true
-    },
+    years: [{ type: Schema.Types.ObjectId, ref: 'years', required: true }],
 
     description: String
 
