@@ -216,7 +216,7 @@ describe('API Spelling Bee', () => {
                 .expect(400)
                 .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?prefix=anti"'));
         });
-        it.only('returns a 404 message when the user inputs a prefix not contained in the database', () => {
+        it('returns a 404 message when the user inputs a prefix not contained in the database', () => {
             return supertest
                 .get('/api/prefixes')
                 .query({ prefix: 'banana' })
@@ -243,11 +243,10 @@ describe('API Spelling Bee', () => {
                 .query({ suffix: 'ly' })
                 .expect(200)
                 .then(res => {
-                    const { suffixes } = res.body;
-                    expect(suffixes.length).to.equal(4);
-                    expect(suffixes[0].word).to.equal('comically');
-                    expect(suffixes[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(suffixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('comically');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "suffix"', () => {
