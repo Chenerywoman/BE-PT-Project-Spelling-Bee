@@ -23,11 +23,10 @@ exports.getPrefixes = (req, res, next) => {
                 return findPrefixes(prefixId);}
             })
         .then(words => {
-                if (!words.length) throw { status: 404, message: `prefix ${prefix} not found` };
+                if (!words.length) throw { status: 404, message: `no words with prefix ${prefix}` };
                 else return res.status(200).send({ words });
             })
             .catch(err => {
-                console.log('err in catch block', err)
                 if (err.status === 400 || err.status === 404) return next(err);
                 else return next({ status: 500, controller: 'prefixes' });
             });
