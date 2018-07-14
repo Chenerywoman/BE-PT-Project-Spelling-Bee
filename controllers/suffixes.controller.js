@@ -1,9 +1,14 @@
-const { findCategory} = require('../queries/categories.queries');
+const { findCategory } = require('../queries/categories.queries');
 const { findSuffixes } = require('../queries/suffixes.queries');
+const { findPartialsByCategory } = require('../queries/partials.queries');
 
 exports.getSuffixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('suffixes')
+            .then(suffixes => {
+                const suffixesId = suffixes[0]._id;
+                return findPartialsByCategory(suffixesId);
+            })
             .then(suffixes => res.status(200).send({ suffixes }))
             .catch(() => next({ status: 500, controller: 'suffixes' }));
     } else {
