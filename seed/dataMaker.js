@@ -3,7 +3,7 @@
 const partialsMaker = (partials, category) => {
 
 return partials.reduce((acc, partial) => {
-acc.push({letters: partial, category: [category], description: '', years: [] });
+acc.push({letters: partial, categories: [category], description: '', years: [] });
 return acc;
 }, []);
 
