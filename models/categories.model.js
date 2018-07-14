@@ -9,7 +9,7 @@ const CategoriesSchema = new Schema({
         lowercase: true,
         required: true
     },
-    year: {
+    years: {
         type: [Schema.Types.ObjectId],
         ref: 'years',
         required: true
