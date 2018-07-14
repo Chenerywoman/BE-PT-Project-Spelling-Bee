@@ -17,18 +17,17 @@ exports.getPrefixes = (req, res, next) => {
         const { prefix } = req.query;
         if (key !== 'prefix') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?prefix=anti"` };
         else return findPartial(prefix)
-            .then(prefix => {
-                console.log('prefix', prefix)
-                const prefixId = prefix[0]._id;
-                console.log(prefixId)
-                return findPrefixes(prefixId);
+            .then(returnedPrefix => {
+                if (!returnedPrefix.length) throw { status: 404, message: `prefix ${prefix} not found` };
+                else {const prefixId = returnedPrefix[0]._id;
+                return findPrefixes(prefixId);}
             })
         .then(words => {
                 if (!words.length) throw { status: 404, message: `prefix ${prefix} not found` };
                 else return res.status(200).send({ words });
             })
             .catch(err => {
-                console.log('error in catch', err)
+                console.log('err in catch block', err)
                 if (err.status === 400 || err.status === 404) return next(err);
                 else return next({ status: 500, controller: 'prefixes' });
             });
