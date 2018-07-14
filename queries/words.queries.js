@@ -15,7 +15,7 @@ exports.findAllWords = () => Word.find().select('-__v').populate({path: 'partial
 return finalResult
 })
 
-exports.findFree = () => Word.find({$and:[ {'categories.prefixes': {$size: 0}}, {'categories.suffixes': {$size: 0}}, {'categories.medials': {$size: 0}}, {'categories.homophones': {$size: 0}}]}).select('-__v').lean();
+exports.findFree = () => Word.find({partials: []}).select('-__v').lean();
 
 exports.checkforWord = (word) => Word.find({word});
  
