@@ -6,9 +6,9 @@ exports.seed = (yearsData, categoriesData, prefixesData, suffixesData, medialsDa
 return mongoose.connection.dropDatabase()
 .then(() => Year.insertMany(yearsData))
 .then(yearsDocs => {
+    console.log('yearsDocs', yearsDocs)
     const categoriesDocs = categoriesData.map(category => {
-         yearsDocs.forEach(year => category.year.push(year.id));
-        return category;
+        return {...category, year: yearsDocs};
     });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
 })
