@@ -1,3 +1,4 @@
 const Word = require('../models/words.model');
 
-exports.findMedials = (medial) => Word.find({'categories.medials': medial}).select('-__v').lean();
+exports.findMedials = (medialId) => Word.find({partials: medialId}).select('-__v').populate({path: 'partials', select: 'letters'}).lean();
+
