@@ -232,9 +232,9 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { suffixes } = res.body;
-                    expect(suffixes[0].letters.length).to.equal(5);
-                    expect(suffixes[0].letters[0]).to.equal('ure');
-                    expect(suffixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    expect(suffixes.length).to.equal(5);
+                    expect(suffixes[0].letters).to.equal('ure');
+                    expect(suffixes[0]).to.have.keys('_id', 'letters', 'category', 'description', 'years');
                 });
         });
         it('GETs all words from /api/suffixes which match the query string', () => {
