@@ -267,15 +267,15 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to api/medials', () => {
-        it('GETs the list of medials from api/medials', () => {
+        it.only('GETs the list of medials from api/medials', () => {
             return supertest
                 .get('/api/medials')
                 .expect(200)
                 .then(res => {
                     const { medials } = res.body;
-                    expect(medials[0].letters.length).to.equal(3);
-                    expect(medials[0].letters[0]).to.equal('sc');
-                    expect(medials[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    expect(medials.length).to.equal(3);
+                    expect(medials[0].letters).to.equal('sc');
+                    expect(medials[0]).to.have.keys('_id', 'letters', 'category', 'description', 'years');
                 });
         });
         it('GETs all words from /api/medials which match the query string', () => {
