@@ -1,21 +1,9 @@
 const Word = require('../models/words.model');
-const Category = require('../models/categories.model');
+// this query just returns selected fields in populate
+// exports.findAllWords = () => Word.find().select('-__v').populate({path: 'partials', select: 'letters', populate:{path: 'categories', select: 'name'}}).populate({path:'years', select: 'year'}).lean();
+exports.findAllWords = () => Word.find().select('-__v').populate({path: 'partials', populate:{path: 'categories'}}).populate({path:'years', select: 'year'}).lean();
 
-exports.findAllWords = () => Word.find().select('-__v').populate({path: 'partials', populate:{path: 'categories', select: {'name':1}}}).lean().then(async words => {
-    const finalResult = await Promise.all(words.map(async word => { 
-        const partials = await Promise.all(word.partials.map( async partial => {
-            const category = await Promise.all(partial.category.map(category => {
-                    return Category.findById(category._id)
-            }))
-            return {...partial, category}
-        }))
-        return {...word, partials}
-}));
-// console.log(JSON.stringify(finalResult[4], null, 2))
-return finalResult
-})
-
-exports.findFree = () => Word.find({partials: []}).select('-__v').lean();
+exports.findFree = () => Word.find({partials: []}).select('-__v').populate({path: 'years', select: 'year'}).lean();
 
 exports.checkforWord = (word) => Word.find({word});
  
