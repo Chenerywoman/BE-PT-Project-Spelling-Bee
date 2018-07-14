@@ -49,12 +49,12 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { words } = res.body;
-                    console.log('words[10]', JSON.stringify(words[10]))
                     expect(words.length).to.equal(54);
                     expect(words[10].word).to.equal(wordsDocs[10].word);
                     expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
-                    expect(words[10].partials[0]).to.have.keys('_id', 'letters');
-                    expect(words[10].partials[0].letters).to.equal('ea')
+                    expect(words[10].partials[0]).to.have.keys('_id', 'letters', 'category', 'description', 'years', '__v');
+                    expect(words[10].partials[0].letters).to.equal('ea');
+                    expect(words[10].partials[0].category[0].name).to.equal('medials');
                 });
         });
         it('returns a 404 message if /words is not requested at /api', () => {
@@ -73,8 +73,8 @@ describe('API Spelling Bee', () => {
                     expect(res.body.message).to.equal('404 not found');
                 });
         });
-        it('POSTS a new word to /api/words', () => {
-            const newWord = { word: 'banana', categories: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+        it('POSTS a new word to /api/words - empty partials array', () => {
+            const newWord = { word: 'banana', partials: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -82,9 +82,9 @@ describe('API Spelling Bee', () => {
                 .expect(201)
                 .then(res => {
                     const { new_word } = res.body;
+                    console.log('new_word', new_word)
                     expect(new_word.word).to.equal('banana');
-                    expect(Object.keys(new_word.categories).length).to.equal(4);
-                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
                 })
                 .then(() => supertest
                     .get('/api/words')
@@ -94,8 +94,8 @@ describe('API Spelling Bee', () => {
                         expect(words[54].word).to.equal('banana');
                     }));
         });
-        it('casts a single string in the the categories object into an array containing the string', () => {
-            const newWord = { word: 'banana', categories: { prefixes: 'ban', suffixes: ['ana'], medials: [], homophones: [] } };
+        it.only('returns an appropriate error ', () => {
+            const newWord = { word: 'antidiluvial', partials: 'anti', years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')

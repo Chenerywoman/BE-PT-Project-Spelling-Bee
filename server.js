@@ -24,6 +24,7 @@ app.use('/api', apiRouter);
 app.get('/*', (req, res) => res.status(404).send({message: '404 not found'}));
 
 app.use((err, req, res, next) => {
+    console.log('err in server', err)
 res.status !== 500
 ? res.status(err.status).send({error: err.message})
 : res.status(500).send({error: `server error in ${err.controller}`});
