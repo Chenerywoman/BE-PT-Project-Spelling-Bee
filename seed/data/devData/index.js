@@ -1,12 +1,8 @@
 module.exports = {
-    words: require('./words'),
-    medials: require('./medials'),
+    years: require('./years.json'),
+    categories: require('./categories.json'),
+    prefixes: require('./prefixes'),
     suffixes: require('./suffixes'),
-    prefixes: require('./prefixes'), 
-    homophones: require('./homophones'),
-    prefixesDescription: require('./prefixesDescription'),
-    suffixesDescription: require('./suffixesDescription'),
-    medialsDescription: require('./medialsDescription'),
-    homophonesDescription: require('./homophonesDescription')
-
+    medials: require('./medials'),
+    words: require('./words')
 };

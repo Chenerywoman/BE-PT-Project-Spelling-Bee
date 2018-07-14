@@ -3,18 +3,15 @@ const server = require('../server');
 const mongoose = require('mongoose');
 const supertest = require('supertest')(server);
 const expect = require('chai').expect;
-const { seed } = require('../seed/seed');
-const { testWords, testPrefixes, testSuffixes, testMedials, testHomophones } = require('../seed/data/testData');
-const { wordsMaker, categoriesMaker } = require('../seed/dataMakers');
-const wordsToSeed = wordsMaker(testWords, testPrefixes, testSuffixes, testMedials);
-const categoriesToSeed = categoriesMaker(testPrefixes, testSuffixes, testMedials, testHomophones);
+const {seed} = require('../seed/seed');
+const {testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords} = require('../seed/data/testData');
 
 describe('API Spelling Bee', () => {
-    let wordDocs, categoriesDocs;
+    let yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs ;
     beforeEach(() => {
-        return seed(wordsToSeed, categoriesToSeed)
+        return seed(testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords)
             .then(data => {
-                [wordDocs, categoriesDocs] = data;
+                [yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs] = data;
             });
     });
     after(() => {
@@ -52,10 +49,12 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { words } = res.body;
+                    console.log('words[10]', JSON.stringify(words[10]))
                     expect(words.length).to.equal(54);
-                    expect(words[0].word).to.equal(wordDocs[0].word);
-                    expect(words[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(words[10].word).to.equal(wordsDocs[10].word);
+                    expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
+                    expect(words[10].partials[0]).to.have.keys('_id', 'letters');
+                    expect(words[10].partials[0].letters).to.equal('ea')
                 });
         });
         it('returns a 404 message if /words is not requested at /api', () => {

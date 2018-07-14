@@ -1,7 +1,8 @@
 module.exports = {
-    testWords: require('./testWords'),
-    testMedials: require('./testMedials'),
-    testSuffixes: require('./testSuffixes'),
+    testYears: require('./testYears.json'),
+    testCategories: require('./testCategories.json'),
     testPrefixes: require('./testPrefixes'),
-    testHomophones: require('./testHomophones')
+    testSuffixes: require('./testSuffixes'),
+    testMedials: require('./testMedials'),
+    testWords: require('./testWords')
 };
