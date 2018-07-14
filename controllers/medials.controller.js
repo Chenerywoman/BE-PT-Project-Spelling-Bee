@@ -1,9 +1,14 @@
 const { findCategory} = require('../queries/categories.queries');
 const { findMedials } = require('../queries/medials.queries');
+const {findPartialsByCategory} = require('../queries/partials.queries');
 
 exports.getMedials = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('medials')
+            .then(medials => {
+                const medialsId = medials[0]._id;
+                return findPartialsByCategory(medialsId);
+            })
             .then(medials => res.status(200).send({ medials }))
             .catch(() => next({ status: 500, controller: 'medials' }));
     } else {
