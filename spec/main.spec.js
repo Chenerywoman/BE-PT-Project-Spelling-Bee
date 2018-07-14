@@ -203,11 +203,10 @@ describe('API Spelling Bee', () => {
                 .query({ prefix: 'pos' })
                 .expect(200)
                 .then(res => {
-                    const { prefixes } = res.body;
-                    expect(prefixes.length).to.equal(4);
-                    expect(prefixes[0].word).to.equal('position');
-                    expect(prefixes[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(prefixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('position');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "prefix"', () => {
@@ -307,47 +306,6 @@ describe('API Spelling Bee', () => {
                 .query({ medial: 'banana' })
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('medial banana not found'));
-        });
-    });
-
-    describe('API requests to api/homophones', () => {
-        it('GETs the list of homophones from /api/words/homophones', () => {
-            return supertest
-                .get('/api/homophones')
-                .expect(200)
-                .then(res => {
-                    const { homophones } = res.body;
-                    expect(homophones[0].letters.length).to.equal(14);
-                    expect(homophones[0].letters[0]).to.equal('accept');
-                    expect(homophones[0]).to.have.keys('_id', 'letters', 'category', 'description');
-                });
-        });
-        it('GETs all words from api/words/homophones which match query string', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ homophone: 'brake' })
-                .expect(200)
-                .then(res => {
-                    const { homophones } = res.body;
-                    expect(homophones.length).to.equal(1);
-                    expect(homophones[0].word).to.equal('break');
-                    expect(homophones[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(homophones[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                });
-        });
-        it('returns a 400 message when the user inputs a query string where the key is not "homophone"', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ banana: 'brake' })
-                .expect(400)
-                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?homophone=brake"'));
-        });
-        it('returns a 404 message when the user inputs a homophone not contained in the database', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ homophone: 'banana' })
-                .expect(404)
-                .then(res => expect(res.body.error).to.equal('homophone banana not found'));
         });
     });
 
