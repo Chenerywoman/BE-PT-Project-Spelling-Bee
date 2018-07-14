@@ -16,9 +16,10 @@ exports.getMedials = (req, res, next) => {
         const { medial } = req.query;
         if (key !== 'medial') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?medial=sc"` };
         else return findPartial(medial)
-        .then(medial => {
-            const medialId = medial[0]._id;
-            return findMedials(medialId);
+        .then(returnedMedial => {
+            if (!returnedMedial.length) throw { status: 404, message: `medial ${medial} not found` };
+            else {const medialId = returnedMedial[0]._id;
+            return findMedials(medialId);}
         })
             .then(words => {
                 if (!words.length) throw { status: 404, message: `no words containing the medial ${medial} found` };
