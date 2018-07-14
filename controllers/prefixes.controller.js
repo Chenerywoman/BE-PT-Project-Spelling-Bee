@@ -1,6 +1,6 @@
 const { findCategory } = require('../queries/categories.queries');
 const { findPrefixes } = require('../queries/prefixes.queries');
-const { findPartialsByCategory } = require('../queries/partials.queries')
+const { findPartialsByCategory, findPartial } = require('../queries/partials.queries')
 
 exports.getPrefixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
@@ -16,12 +16,19 @@ exports.getPrefixes = (req, res, next) => {
         const key = Object.keys(req.query)[0];
         const { prefix } = req.query;
         if (key !== 'prefix') throw { status: 400, message: `${key} is an invalid query string key - valid format is "?prefix=anti"` };
-        return findPrefixes(prefix)
-            .then(prefixes => {
-                if (!prefixes.length) throw { status: 404, message: `prefix ${prefix} not found` };
-                else return res.status(200).send({ prefixes });
+        else return findPartial(prefix)
+            .then(prefix => {
+                console.log('prefix', prefix)
+                const prefixId = prefix[0]._id;
+                console.log(prefixId)
+                return findPrefixes(prefixId);
+            })
+        .then(words => {
+                if (!words.length) throw { status: 404, message: `prefix ${prefix} not found` };
+                else return res.status(200).send({ words });
             })
             .catch(err => {
+                console.log('error in catch', err)
                 if (err.status === 400 || err.status === 404) return next(err);
                 else return next({ status: 500, controller: 'prefixes' });
             });
