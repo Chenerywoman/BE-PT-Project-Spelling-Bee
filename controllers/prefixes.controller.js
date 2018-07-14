@@ -1,10 +1,17 @@
 const { findCategory} = require('../queries/categories.queries');
 const { findPrefixes } = require('../queries/prefixes.queries');
+const {findPartialsByCategory} = require('../queries/partials.queries')
 
 exports.getPrefixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
         return findCategory('prefixes')
-            .then(prefixes => res.status(200).send({ prefixes }))
+            .then(prefixes => {
+                const prefixesId =  prefixes[0]._id;
+                return findPartialsByCategory(prefixesId);
+            })
+            .then(prefixes => {
+                return res.status(200).send({prefixes});
+            })
             .catch(() => next({ status: 500, controller: 'prefixes' }));
 
     } else {
