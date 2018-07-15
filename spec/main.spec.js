@@ -70,6 +70,34 @@ describe('API Spelling Bee', () => {
         });
     });
 
+    describe('API requests to /api/categories', () => {
+        it('GETs all years from /api/categories', () => {
+            return supertest
+                .get('/api/categories')
+                .expect(200)
+                .then(res => {
+                    const { categories } = res.body;
+                    expect(categories.length).to.equal(4);
+                    expect(categories[2].description).to.equal(categoriesDocs[2].description);
+                    expect(categories[2]).to.have.keys('_id', 'years', 'description', 'name');
+                    expect(categories[2]._id).to.equal(`${categoriesDocs[2]._id}`);
+                });
+        });
+        it('GETs a category from /api/categories/:categories', () => {
+            return supertest
+                .get('/api/categories/suffixes')
+                .expect(200)
+                .then(res => {
+                    const { category } = res.body;
+                    expect(category.length).to.equal(1);
+                    expect(category[0].name).to.equal(categoriesDocs[1].name);
+                    expect(category[0].description).to.equal(categoriesDocs[1].description);
+                    expect(category[0]).to.have.keys('_id', 'years', 'name', 'description');
+                    expect(category[0]._id).to.equal(`${categoriesDocs[1]._id}`);
+                });
+        });
+    });
+
     describe('API requests to /api/words', () => {
         it('GETs all words from /api/words', () => {
             return supertest
