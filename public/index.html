@@ -6,7 +6,48 @@
 
     <h1>Spelling Bee: API routes</h1>
     <p>
-
+    <h2>api/years</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/years</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of available years.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/years/:year</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object containing the requested year.</li>
+    </ul>
+    </p>
+    <p>
+    <h2>api/categories</h2>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/years</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object with an array of categories with the name, description & years the categories belong to.</li>
+    </ul>
+    <ul>
+        <li class="api">
+            <span class="endpoint">
+                <span class="http">GET</span>
+                <span class="route">/api/categories/:category</span>
+            </span>
+        </li>
+        <li class="listItem">Returns an object containing the requested category.</li>
+    </ul>
+    </p>
+    <p>
         <h2>api/words</h2>
         <ul>
             <li class="api">
@@ -15,8 +56,11 @@
                     <span class="route">/api/words</span>
                 </span>
             </li>
-            <li class="listItem">Returns an object containing an array of word objects which each contain the word and a categories object with
-                four arrays: prefixes, suffixes, medials & homophones.</li>
+            <li class="listItem">Returns an object containing an array of word objects which each contain the word and the year(s) it belongs
+                to. Each word object also contains a 'partials' array. (A partial is part of a word - suffix, prefix or medial
+                - see below). Some words have no partials, so the partials array is empty. If a word contains a partial,
+                e.g. 'superman' has the prefix 'super', the partials array contains the partial ('super') in the key 'letters'
+                and the category it belongs to, e.g. prefixes.</li>
             <li class="api">
                 <span class="endpoint">
                     <span class="http">POST</span>
@@ -24,7 +68,7 @@
                 </span>
             </li>
             <li class="listItem">Posts a word object to the database. This requires a JSON body with the following structure: {"word": "pineapple",
-                "categories": {"prefixes" : ["pine"], "suffixes": ["le"], "medials: [], "homophones": []}}</li>
+                "partial": "pine", "year": 3}</li>
             <li class="api">
                 <span class="endpoint">
                     <span class="http">DELETE</span>
@@ -42,8 +86,8 @@
                 <span class="route">/api/words/freestyle</span>
             </span>
         </li>
-        <li class="listItem">Returns an object with an array of words where all four categories of arrays (prefixes, suffixes, medials & homophones)
-            are empty.</li>
+        <li class="listItem">Returns an object with an array of words where the partials array is empty, i.e. it does not contain any listed prefixes,
+            suffixes or medials.</li>
     </ul>
     </p>
     <h2>api/prefixes</h2>
@@ -54,7 +98,7 @@
                 <span class="route">/api/prefixes</span>
             </span>
         </li>
-        <li class="listItem">Returns an object with an array of prefixes.</li>
+        <li class="listItem">Returns an object with an array of prefix objects, containing the letters of the prefix, the years and category it belongs to.</li>
     </ul>
     <ul>
         <li class="api">
@@ -64,8 +108,7 @@
             </span>
         </li>
         <li class="listItem">With a prefix query e.g
-            <span class="query">/api/prefixes?prefix=anti</span> returns an object with an array of word objects where the prefixes array contains
-            the query string. </li>
+            <span class="query">/api/prefixes?prefix=anti</span> Returns an object with an array of word objects where the prefix in the query string is in the word's partials array. </li>
     </ul>
     <h2>api/suffixes</h2>
     <ul>
@@ -75,7 +118,7 @@
                 <span class="route">/api/suffixes</span>
             </span>
         </li>
-        <li class="listItem">Returns an object with an array of suffixes.</li>
+        <li class="listItem">Returns an object with an array of suffix objects, containing the letters of the suffix, the years and category it belongs to.</li>
     </ul>
     <ul>
         <li class="api">
@@ -85,8 +128,7 @@
             </span>
         </li>
         <li class="listItem">With a suffix query e.g
-            <span class="query">/api/suffixes?suffix=ly</span> returns an object with an array of word objects where the suffixes array contains
-            the query string. </li>
+            <span class="query">/api/suffixes?suffix=ly</span> Returns an object with an array of word objects where the suffix in the query string is in the word's partials array. </li>
     </ul>
     </p>
     <h2>api/medials</h2>
@@ -97,7 +139,7 @@
                 <span class="route">/api/medials</span>
             </span>
         </li>
-        <li class="listItem">Returns an object with an array of medials.</li>
+        <li class="listItem">Returns an object with an array of medials objects, containing the letters of the medial, the years and category it belongs to.</li>
     </ul>
     <ul>
         <li class="api">
@@ -107,8 +149,7 @@
             </span>
         </li>
         <li class="listItem">With a medial query e.g
-            <span class="query">/api/medials?medial=sc</span> returns an object with an array of word objects where the medials array contains
-            the query string. </li>
+            <span class="query">/api/medials?medial=sc</span> Returns an object with an array of word objects where the medial in the query string is in the word's partials array. </li>
     </ul>
     </p>
     </p>
@@ -120,7 +161,7 @@
                 <span class="route">/api/homophones</span>
             </span>
         </li>
-        <li class="listItem">Returns an object with an array of homophones.</li>
+        <li class="listItem">Currently under development - currently returns a description of homophones.</li>
     </ul>
     <ul>
         <li class="api">
@@ -129,9 +170,7 @@
                 <span class="route">/api/words/homophones?homophone={}</span>
             </span>
         </li>
-        <li class="listItem">With a homophone query e.g
-            <span class="query">/api/words/homophones?homophone=break</span> returns an object with an array of word objects where the homophones
-            array contains the query string. </li>
+        <li class="listItem"> Currently under development. </li>
     </ul>
 </body>
 
