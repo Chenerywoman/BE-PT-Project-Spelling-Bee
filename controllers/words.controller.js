@@ -20,7 +20,6 @@ exports.postNewWord = (req, res, next) => {
     requiredKeys.forEach((elem, ind) => { if (bodyKeys[ind] !== elem) throw { status: 400, message: `${bodyKeys[ind]} is an invalid key` }; });
     const requestedYears = req.body.years;
     const requestedPartials = req.body.partials;
-
     if (!Array.isArray(requestedYears) || !Array.isArray(requestedPartials)) throw { status: 400, message: 'please ensure partials & years are contained in an array'};
 
     return findYears(requestedYears)
@@ -30,9 +29,17 @@ exports.postNewWord = (req, res, next) => {
             else return [years, requestedPartials];
         })
         .then(([years, partials]) => {
+            if (!partials.length && requestedPartials.length) throw { status: 404, message: 'requested partials not found in the database' };
+            else if (partials.length && requestedPartials.length) {
             const yearsIds = years.map(year => year[0]._id);
-            const partialsIds = partials.map(partial => partial._id);
+            const partialsIds = partials[0].map(partial => partial._id);
             return Promise.all([yearsIds, partialsIds, checkforWord(req.body.word)]);
+            }
+            else {
+            const yearsIds = years.map(year => year[0]._id);
+            const partialsIds = [];
+            return Promise.all([yearsIds, partialsIds, checkforWord(req.body.word)]);
+            }
         })
         .then(([yearsIds, partialsIds, word]) => {
             if (word.length) { throw { status: 400, message: `${req.body.word} already exists in the database`}; }
