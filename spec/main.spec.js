@@ -100,6 +100,15 @@ describe('API Spelling Bee', () => {
                     // expect(categories[0].years[0]._id).to.equal(`${categoriesDocs[0].years[0]}`);
                     expect(categories[0].years[0].year).to.equal(3);
                 });
+            });
+        it('returns an appropriate error if an non-existent year is requested at /api/categories?year={year}', () => {
+            return supertest
+                .get('/api/categories')
+                .query({year: 21})
+                .expect(404)
+                .then(res => {
+                    expect(res.body.error).to.equal('year 21 not found');
+                });
         });
         it('GETs a category from /api/categories/:categories', () => {
             return supertest
