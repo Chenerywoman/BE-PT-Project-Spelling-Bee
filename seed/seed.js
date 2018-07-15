@@ -11,7 +11,7 @@ return mongoose.connection.dropDatabase()
    });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
 })
-.then(([yearDocs, categoryDocs]) => {
+.then(([yearsDocs, categoryDocs]) => {
 const prefixes = partialsMaker(prefixesData, 'prefixes');
 const suffixes = partialsMaker(suffixesData, 'suffixes');
 
@@ -21,7 +21,7 @@ const duplicateMedials = medialsData.reduce((acc, medial) => {
 }, []);
 
 prefixes.map(prefix => {
-        yearDocs.forEach(year => prefix.years.push(year.id));
+        prefix.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
         duplicateMedials.forEach(duplicate => {
              if (prefix.letters === duplicate) prefix.categories.push('medials');
          });
@@ -33,7 +33,7 @@ prefixes.map(prefix => {
     });
 
 suffixes.map(suffix => {
-    yearDocs.forEach(year => suffix.years.push(year.id));
+   suffix.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
     categoryDocs.forEach(category => {
         if (category.name === suffix.categories[0]) suffix.categories.splice(0, 1, category._id);
     });
@@ -47,18 +47,18 @@ duplicateMedials.forEach(duplicate => {
 const medials = partialsMaker(filteredMedials, 'medials');
 
 medials.map(medial => {
-    yearDocs.forEach(year => medial.years.push(year.id));
+    medial.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
     categoryDocs.forEach(category => {
         if (category.name === medial.categories[0]) medial.categories.splice(0, 1, category._id);
     });
 });
-  return Promise.all([yearDocs, categoryDocs, Partial.insertMany(prefixes), Partial.insertMany(suffixes), Partial.insertMany(medials)]);
+  return Promise.all([yearsDocs, categoryDocs, Partial.insertMany(prefixes), Partial.insertMany(suffixes), Partial.insertMany(medials)]);
 })
-.then(([yearDocs, categoryDocs, prefixesDocs, suffixesDocs, medialsDocs]) =>  {
+.then(([yearsDocs, categoryDocs, prefixesDocs, suffixesDocs, medialsDocs]) =>  {
     const words = wordsMaker(wordsData, prefixesData, suffixesData, medialsData);
 
     words.map(wordObj => {
-        wordObj.years.push(yearDocs[2]._id, yearDocs[3]._id);
+        wordObj.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
         prefixesDocs.forEach(prefix => {
             wordObj.partials.map((partial, ind) => {
                 if (prefix.letters === partial) wordObj.partials.splice(ind, 1, prefix._id);
@@ -76,7 +76,7 @@ medials.map(medial => {
         });
     });
 
-    return Promise.all([yearDocs, categoryDocs, prefixesDocs, suffixesDocs, medialsDocs, Word.insertMany(words)]);
+    return Promise.all([yearsDocs, categoryDocs, prefixesDocs, suffixesDocs, medialsDocs, Word.insertMany(words)]);
 });
 };
  
