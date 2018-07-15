@@ -3,11 +3,11 @@ const server = require('../server');
 const mongoose = require('mongoose');
 const supertest = require('supertest')(server);
 const expect = require('chai').expect;
-const {seed} = require('../seed/seed');
-const {testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords} = require('../seed/data/testData');
+const { seed } = require('../seed/seed');
+const { testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords } = require('../seed/data/testData');
 
 describe('API Spelling Bee', () => {
-    let yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs ;
+    let yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs;
     beforeEach(() => {
         return seed(testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords)
             .then(data => {
@@ -42,6 +42,34 @@ describe('API Spelling Bee', () => {
         });
     });
 
+    describe('API requests to /api/years', () => {
+        it('GETs all years from /api/years', () => {
+            return supertest
+                .get('/api/years')
+                .expect(200)
+                .then(res => {
+                    const { years } = res.body;
+                    expect(years.length).to.equal(6);
+                    expect(years[2].year).to.equal(yearDocs[2].year);
+                    expect(years[2]).to.have.keys('_id', 'year');
+                    expect(years[2]._id).to.equal(`${yearDocs[2]._id}`);
+                });
+        });
+        it('GETs a year from /api/years/:year', () => {
+            return supertest
+                .get('/api/years/3')
+                .expect(200)
+                .then(res => {
+                    const { year } = res.body;
+                    expect(year.length).to.equal(1);
+                    expect(year[0].year).to.equal(yearDocs[2].year);
+                    expect(year[0].year).to.equal(3);
+                    expect(year[0]).to.have.keys('_id', 'year');
+                    expect(year[0]._id).to.equal(`${yearDocs[2]._id}`);
+                });
+        });
+    });
+
     describe('API requests to /api/words', () => {
         it('GETs all words from /api/words', () => {
             return supertest
@@ -51,6 +79,7 @@ describe('API Spelling Bee', () => {
                     const { words } = res.body;
                     expect(words.length).to.equal(54);
                     expect(words[10].word).to.equal(wordsDocs[10].word);
+                    expect(words[10]._id).to.equal(`${wordsDocs[10]._id}`);
                     expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
                     expect(words[10].partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years', '__v');
                     expect(words[10].partials[0].letters).to.equal('ea');
@@ -263,8 +292,8 @@ describe('API Spelling Bee', () => {
                 .then(res => {
                     expect(res.body.error).to.equal('suffix banana not found');
                 });
+        });
     });
-});
 
     describe('API requests to api/medials', () => {
         it('GETs the list of medials from api/medials', () => {
