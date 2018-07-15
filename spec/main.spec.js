@@ -267,20 +267,6 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/freestyle', () => {
-        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
-            return supertest
-                .get('/api/words/freestyle')
-                .expect(200)
-                .then(res => {
-                    const { freestyle } = res.body;
-                    expect(freestyle.length).to.equal(12);
-                    expect(freestyle[0].word).to.equal('accept');
-                    expect(freestyle[0]).to.have.keys('_id', 'word', 'partials', 'years');
-                });
-        });
-    });
-
     describe('API requests to /api/prefixes', () => {
         it('GETs the list of prefixes from /api/prefixes', () => {
             return supertest
@@ -403,6 +389,20 @@ describe('API Spelling Bee', () => {
                 .query({ medial: 'banana' })
                 .expect(404)
                 .then(res => expect(res.body.error).to.equal('medial banana not found'));
+        });
+    });
+
+    describe('API requests to api/freestyle', () => {
+        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
+            return supertest
+                .get('/api/freestyle')
+                .expect(200)
+                .then(res => {
+                    const { freestyle } = res.body;
+                    expect(freestyle.length).to.equal(12);
+                    expect(freestyle[0].word).to.equal('accept');
+                    expect(freestyle[0]).to.have.keys('_id', 'word', 'partials', 'years');
+                });
         });
     });
 
