@@ -77,7 +77,7 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { categories } = res.body;
-                    expect(categories.length).to.equal(4);
+                    expect(categories.length).to.equal(5);
                     expect(categories[2].description).to.equal(categoriesDocs[2].description);
                     expect(categories[2]).to.have.keys('_id', 'years', 'description', 'name');
                     expect(categories[2]._id).to.equal(`${categoriesDocs[2]._id}`);
