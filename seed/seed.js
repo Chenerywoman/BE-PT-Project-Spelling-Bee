@@ -5,9 +5,8 @@ const {partialsMaker, wordsMaker} = require('./dataMaker');
 exports.seed = (yearsData, categoriesData, prefixesData, suffixesData, medialsData, wordsData) => {
 return mongoose.connection.dropDatabase()
 .then(() => Year.insertMany(yearsData))
-.then(yearsDocs => {
-    const categoriesDocs = categoriesData.map(category => {
-        yearsDocs.forEach(year => category.years.push(year.id));
+.then(yearsDocs => { const categoriesDocs = categoriesData.map(category => {
+        category.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
        return category;
    });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
@@ -59,7 +58,7 @@ medials.map(medial => {
     const words = wordsMaker(wordsData, prefixesData, suffixesData, medialsData);
 
     words.map(wordObj => {
-        yearDocs.forEach(year => wordObj.years.push(year.id));
+        wordObj.years.push(yearDocs[2]._id, yearDocs[3]._id);
         prefixesDocs.forEach(prefix => {
             wordObj.partials.map((partial, ind) => {
                 if (prefix.letters === partial) wordObj.partials.splice(ind, 1, prefix._id);
