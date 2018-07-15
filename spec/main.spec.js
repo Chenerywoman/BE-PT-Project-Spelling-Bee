@@ -143,6 +143,26 @@ describe('API Spelling Bee', () => {
                         expect(words[54].word).to.equal('antiauthoritarian');
                     }));
         });
+        it('returns an appropriate error to a post request to /api/words - if the requested partial does not exist in the partials collection', () => {
+            const newWord = { word: 'antiauthoritarian', partials: ['jemima'], years: [3, 4] };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(201)
+                .then(res => {
+                    const { new_word } = res.body;
+                    expect(new_word.word).to.equal('antiauthoritarian');
+                    expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
+                })
+                .then(() => supertest
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(55);
+                        expect(words[54].word).to.equal('antiauthoritarian');
+                    }));
+        });
         it('returns an appropriate error if an string is passed to partials instead of an array', () => {
             const newWord = { word: 'antidiluvial', partials: 'anti', years: [3, 4] };
             return supertest
