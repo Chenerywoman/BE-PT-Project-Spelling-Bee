@@ -41,6 +41,15 @@
             <li class="api">
                 <span class="endpoint">
                     <span class="http">GET</span>
+                    <span class="route">/api/categories?year={year}</span>
+                </span>
+            </li>
+            <li class="listItem">Returns an object with an array of categories which belong to a particular year.</li>
+        </ul>
+        <ul>
+            <li class="api">
+                <span class="endpoint">
+                    <span class="http">GET</span>
                     <span class="route">/api/categories/:category</span>
                 </span>
             </li>
@@ -165,7 +174,7 @@
         <li class="api">
             <span class="endpoint">
                 <span class="http">GET</span>
-                <span class="route">/api/words/homophones?homophone={homophone}</span>
+                <span class="route">/api/homophones?homophone={homophone}</span>
             </span>
         </li>
         <li class="listItem"> Currently under development. </li>
@@ -177,7 +186,7 @@
             <li class="api">
                 <span class="endpoint">
                     <span class="http">GET</span>
-                    <span class="route">/api/words/freestyle</span>
+                    <span class="route">/api/freestyle</span>
                 </span>
             </li>
             <li class="listItem">Returns an object with an array of words where the partials array is empty, i.e. it does not contain any listed
