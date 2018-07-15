@@ -81,7 +81,7 @@ describe('API Spelling Bee', () => {
                     expect(words[10].word).to.equal(wordsDocs[10].word);
                     expect(words[10]._id).to.equal(`${wordsDocs[10]._id}`);
                     expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
-                    expect(words[10].partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years', '__v');
+                    expect(words[10].partials[0]).to.have.keys('_id', 'letters', 'categories');
                     expect(words[10].partials[0].letters).to.equal('ea');
                     expect(words[10].partials[0].categories[0].name).to.equal('medials');
                     expect(words[10].years[0].year).to.equal(3);
