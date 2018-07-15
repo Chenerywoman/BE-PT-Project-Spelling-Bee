@@ -18,5 +18,10 @@
         "name": "homophones",
         "years": [],
         "description": "Homophones are two or more words that sound the same but have different meanings and often different spellings. For example, 'rain', 'rein' and 'reign' are pronounced the same but you might need an umbrella for the first one, a horse for the second and the third is what a king or queen does!"
+    },
+    {
+        "name": "freestyle",
+        "years": [],
+        "description": "Freestyle words are not in any of the other categories, i.e. they don't contain any prefixes, suffixes or medials and they aren't homophones."
     }
 ]
