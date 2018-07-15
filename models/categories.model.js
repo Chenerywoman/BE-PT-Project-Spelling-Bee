@@ -9,12 +9,9 @@ const CategoriesSchema = new Schema({
         lowercase: true,
         required: true
     },
-    years: {
-        type: [Schema.Types.ObjectId],
-        ref: 'years',
-        required: true
-    },
-
+  
+    years: [{type: [Schema.Types.ObjectId], ref: 'years', required: true}],
+    
     description: String
 
 });
