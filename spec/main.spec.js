@@ -83,6 +83,24 @@ describe('API Spelling Bee', () => {
                     expect(categories[2]._id).to.equal(`${categoriesDocs[2]._id}`);
                 });
         });
+        it('GETs all the categories for a year from /api/categories?year={year}', () => {
+            return supertest
+                .get('/api/categories')
+                .query({year: 3})
+                .expect(200)
+                .then(res => {
+                    const { categories } = res.body;
+                    console.log('categories[0]', categories[0], 'categoriesDocs[0]', categoriesDocs[0])
+                    console.log('yearDocs', yearDocs)
+                    expect(categories.length).to.equal(5);
+                    expect(categories[0].name).to.equal(categoriesDocs[0].name);
+                    expect(categories[0].description).to.equal(categoriesDocs[0].description);
+                    expect(categories[0]).to.have.keys('_id', 'years', 'name', 'description');
+                    expect(categories[0]._id).to.equal(`${categoriesDocs[0]._id}`);
+                    // expect(categories[0].years[0]._id).to.equal(`${categoriesDocs[0].years[0]}`);
+                    expect(categories[0].years[0].year).to.equal(3);
+                });
+        });
         it('GETs a category from /api/categories/:categories', () => {
             return supertest
                 .get('/api/categories/suffixes')
