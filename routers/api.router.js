@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const yearsRouter = require('./years.router');
+const categoriesRouter = require('./categories.router');
 const wordsRouter = require('./words.router');
 const prefixesRouter = require('./prefixes.router');
 const suffixesRouter = require('./suffixes.router');
@@ -11,6 +12,8 @@ const path = require('path');
 router.get('/', (req, res, next) => res.sendFile(path.join(__dirname, '..', 'public/index.html')));
 
 router.use('/years', yearsRouter);
+
+router.use('/categories', categoriesRouter);
 
 router.use('/words', wordsRouter);
 
