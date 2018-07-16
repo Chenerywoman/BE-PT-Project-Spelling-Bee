@@ -7,9 +7,9 @@ exports.getMedials = (req, res, next) => {
         return findCategory('medials')
             .then(medials => {
                 const medialsId = medials[0]._id;
-                return findPartialsByCategory(medialsId);
+                return Promise.all([medials, findPartialsByCategory(medialsId)]);
             })
-            .then(medials => res.status(200).send({ medials }))
+            .then(([[medials], partials]) => res.status(200).send({ medials, partials }))
             .catch(() => next({ status: 500, controller: 'medials' }));
     } else {
         const key = Object.keys(req.query)[0];
