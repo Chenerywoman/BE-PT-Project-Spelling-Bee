@@ -22,7 +22,7 @@
     {
         "name": "freestyle",
         "years": [],
-        "description": "Freestyle words are not in any of the other categories, i.e. they don't contain any prefixes, suffixes or medials and they aren't homophones."
+        "description": "Freestyle words are words which don't contain any prefixes, suffixes or medials. They may be homophones of other words in the list."
     },
     {
         "name": "words",
