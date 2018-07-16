@@ -23,5 +23,10 @@
         "name": "freestyle",
         "years": [],
         "description": "Freestyle words are not in any of the other categories, i.e. they don't contain any prefixes, suffixes or medials and they aren't homophones."
+    },
+    {
+        "name": "words",
+        "years": [],
+        "description": "This is a complete list of all the words for this year covering all categories: prefixes, suffixes, medials, homophones and freestyle."
     }
 ]
