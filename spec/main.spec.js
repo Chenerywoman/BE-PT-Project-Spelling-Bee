@@ -382,11 +382,11 @@ describe('API Spelling Bee', () => {
                 .get('/api/medials')
                 .expect(200)
                 .then(res => {
-                    const { medials } = res.body;
-                    expect(medials.length).to.equal(3);
-                    expect(medials[0].letters).to.equal('sc');
-                    expect(medials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
-
+                    const { medials, partials } = res.body;
+                    expect(medials.name).to.equal('medials');
+                    expect(medials.years.length).to.equal(2);
+                    expect(partials[0].letters).to.equal('sc');
+                    expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
         });
         it('GETs all words from /api/medials which match the query string', () => {
