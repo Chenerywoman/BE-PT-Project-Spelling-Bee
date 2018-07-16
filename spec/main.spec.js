@@ -299,9 +299,8 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { prefixes, partials } = res.body;
-                    expect(prefixes.length).to.equal(1);
-                    expect(prefixes[0].name).to.equal('prefixes');
-                    expect(prefixes[0].years.length).to.equal(2);
+                    expect(prefixes.name).to.equal('prefixes');
+                    expect(prefixes.years.length).to.equal(2);
                     expect(partials[0].letters).to.equal('im');
                     expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
