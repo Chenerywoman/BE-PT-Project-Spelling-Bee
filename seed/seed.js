@@ -5,9 +5,11 @@ const {partialsMaker, wordsMaker} = require('./dataMaker');
 exports.seed = (yearsData, categoriesData, prefixesData, suffixesData, medialsData, wordsData) => {
 return mongoose.connection.dropDatabase()
 .then(() => Year.insertMany(yearsData))
-.then(yearsDocs => { const categoriesDocs = categoriesData.map(category => {
-        category.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
-       return category;
+.then(yearsDocs => { 
+    const categoriesDocs = categoriesData.map(category => {
+        const newCategory = {...category};
+        newCategory.years.push(yearsDocs[2]._id, yearsDocs[3]._id);
+       return newCategory;
    });
 return Promise.all([yearsDocs, Category.insertMany(categoriesDocs)]);
 })

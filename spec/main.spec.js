@@ -90,8 +90,6 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { categories } = res.body;
-                    console.log('categories[0]', categories[0], 'categoriesDocs[0]', categoriesDocs[0])
-                    console.log('yearDocs', yearDocs)
                     expect(categories.length).to.equal(5);
                     expect(categories[0].name).to.equal(categoriesDocs[0].name);
                     expect(categories[0].description).to.equal(categoriesDocs[0].description);
