@@ -9,7 +9,7 @@ exports.getPrefixes = (req, res, next) => {
                 const prefixesId = prefixes[0]._id;
                 return Promise.all([prefixes, findPartialsByCategory(prefixesId)]);
             })
-            .then(([prefixes, partials]) => {
+            .then(([[prefixes], partials]) => {
             return res.status(200).send({ prefixes, partials });
     })
             .catch(() => next({ status: 500, controller: 'prefixes' }));
