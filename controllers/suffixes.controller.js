@@ -7,9 +7,9 @@ exports.getSuffixes = (req, res, next) => {
         return findCategory('suffixes')
             .then(suffixes => {
                 const suffixesId = suffixes[0]._id;
-                return findPartialsByCategory(suffixesId);
+                return Promise.all([suffixes, findPartialsByCategory(suffixesId)]);
             })
-            .then(suffixes => res.status(200).send({ suffixes }))
+            .then(([[suffixes], partials]) => res.status(200).send({ suffixes, partials }))
             .catch(() => next({ status: 500, controller: 'suffixes' }));
     } else {
         const key = Object.keys(req.query)[0];
