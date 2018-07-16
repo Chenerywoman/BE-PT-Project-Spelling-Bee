@@ -71,13 +71,13 @@ describe('API Spelling Bee', () => {
     });
 
     describe('API requests to /api/categories', () => {
-        it('GETs all years from /api/categories', () => {
+        it('GETs all categories from /api/categories', () => {
             return supertest
                 .get('/api/categories')
                 .expect(200)
                 .then(res => {
                     const { categories } = res.body;
-                    expect(categories.length).to.equal(5);
+                    expect(categories.length).to.equal(6);
                     expect(categories[2].description).to.equal(categoriesDocs[2].description);
                     expect(categories[2]).to.have.keys('_id', 'years', 'description', 'name');
                     expect(categories[2]._id).to.equal(`${categoriesDocs[2]._id}`);
@@ -90,7 +90,7 @@ describe('API Spelling Bee', () => {
                 .expect(200)
                 .then(res => {
                     const { categories } = res.body;
-                    expect(categories.length).to.equal(5);
+                    expect(categories.length).to.equal(6);
                     expect(categories[0].name).to.equal(categoriesDocs[0].name);
                     expect(categories[0].description).to.equal(categoriesDocs[0].description);
                     expect(categories[0]).to.have.keys('_id', 'years', 'name', 'description');
@@ -298,10 +298,12 @@ describe('API Spelling Bee', () => {
                 .get('/api/prefixes')
                 .expect(200)
                 .then(res => {
-                    const { prefixes } = res.body;
-                    expect(prefixes.length).to.equal(5);
-                    expect(prefixes[0].letters).to.equal('im');
-                    expect(prefixes[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
+                    const { prefixes, partials } = res.body;
+                    expect(prefixes.length).to.equal(1);
+                    expect(prefixes[0].name).to.equal('prefixes');
+                    expect(prefixes[0].years.length).to.equal(2);
+                    expect(partials[0].letters).to.equal('im');
+                    expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
         });
         it('GETs all words from /api/prefixes which match a query string', () => {
