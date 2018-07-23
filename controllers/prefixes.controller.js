@@ -1,6 +1,6 @@
 const { findCategory } = require('../queries/categories.queries');
 const { findPrefixes } = require('../queries/prefixes.queries');
-const { findPartialsByCategory, findPartial } = require('../queries/partials.queries')
+const { findPartialsByCategory, findPartial } = require('../queries/partials.queries');
 
 exports.getPrefixes = (req, res, next) => {
     if (!Object.keys(req.query).length) {
