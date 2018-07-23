@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const {years, categories, prefixes, suffixes, medials, words } = require('./data/devData/index');
 const mongoose = require('mongoose');
 const url = require('../config');
