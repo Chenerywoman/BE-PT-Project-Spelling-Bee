@@ -4,6 +4,7 @@
   "description": "creating words with rules",
   "main": "index.js",
   "scripts": {
+    "start":"node index.js",
     "test": "mocha ./spec/main.spec.js",
     "lint": "eslint ./",
     "dev": "nodemon index.js",
