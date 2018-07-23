@@ -3,7 +3,7 @@ const router = express.Router();
 const {getYears, getYear} = require('../controllers/years.controller');
 
 router.route('/')
-.get(getYears)
+.get(getYears);
 
 router.get('/:year', getYear);
 
