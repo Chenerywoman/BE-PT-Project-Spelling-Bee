@@ -1,5 +1,5 @@
 const { findAllCategories, findCategoriesByYear, findCategory } = require('../queries/categories.queries');
-const { findYear } = require('../queries/years.queries')
+const { findYear } = require('../queries/years.queries');
 
 exports.getCategories = (req, res, next) => {
     if (req.query.year) {
@@ -13,7 +13,7 @@ exports.getCategories = (req, res, next) => {
                 }
             })
             .then(categories => {
-                res.status(200).send({ categories })
+                res.status(200).send({ categories });
             })
             .catch(err => {
                 if (err.status === 400 || err.status === 404) return next(err);
