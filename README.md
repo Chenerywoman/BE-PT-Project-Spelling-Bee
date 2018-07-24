@@ -123,7 +123,7 @@ npm test
 
 The tests use mocha, chai & supertest.  
 
-The main.spec.js has one main 'API endpoints' describe block which contains 4 further describe blocks for each of years, categories, words, prefixes, suffixes, medials & freestyle.  It exhaustively tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
+The main.spec.js has one main 'API endpoints' describe block which contains 4 further describe blocks for each of years, categories, words, prefixes, suffixes, medials & freestyle.  It tests all the endpoints for their respective GET, PUT, POST & DELETE requests.  It also tests error-handling for each route.
 
 ## Built With
 Node: version 9.9.0
