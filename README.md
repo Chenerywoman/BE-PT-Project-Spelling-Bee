@@ -127,7 +127,9 @@ The main.spec.js has one main 'API endpoints' describe block which contains 4 fu
 
 ## Built With
 Node: version 9.9.0
+
 MongoDB: version 3.4.10
+
 NPM: 5.6.0
 
 ## Authors
