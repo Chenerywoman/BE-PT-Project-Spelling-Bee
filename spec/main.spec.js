@@ -148,14 +148,7 @@ describe('API Spelling Bee', () => {
                     expect(res.body.message).to.equal('404 not found');
                 });
         });
-        it('returns a 404 message if one of prefixes/suffixes/medials/homophones/freestyle is not requested at /api/words', () => {
-            return supertest
-                .get('/api/words/banana')
-                .expect(404)
-                .then(res => {
-                    expect(res.body.message).to.equal('404 not found');
-                });
-        });
+    
         it('POSTS a new word to /api/words - empty partials array', () => {
             const newWord = { word: 'banana', partials: [], years: [3, 4] };
             return supertest
