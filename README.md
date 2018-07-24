@@ -2,7 +2,7 @@
 
 https://mighty-hollows-41094.herokuapp.com/api
 
-Spelling Bee is a javascript project which uses data from the UK Education department national curriculum. Briefly, the data includes list of words which children in years 3 & 4 (Key Stage 2) are expected to learn to spell.  It is a RESTful express API which responds to different HTTP requests to various /api endpoints with (arrays of) JSON objects containing school years, categories, and words. It uses the Express npm package in the Node environment to run a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either new_spelling_bee or new_spelling_bee_test, depending on whether the project is running in the test or dev environment.  
+Spelling Bee BackEnd is a javascript project which uses data from the UK Education department national curriculum. Briefly, the data includes list of words which children in years 3 & 4 (Key Stage 2) are expected to learn to spell.  It is a RESTful express API which responds to different HTTP requests to various /api endpoints with (arrays of) JSON objects containing school years, categories, and words. It uses the Express npm package in the Node environment to run a server which connects to a MongoDB database using the Mongoose library.  The database connected to is either new_spelling_bee or new_spelling_bee_test, depending on whether the project is running in the test or dev environment.  
 
 ## Getting Started
 
