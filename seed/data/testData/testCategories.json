@@ -1,0 +1,32 @@
+[
+    {
+        "name": "prefixes",
+        "years": [],
+        "description": "Prefixes are groups of letters added to the beginning of a word, which change its meaning. For example: 'anti' means against, e.g. antisocial; 'inter' means between or among, e.g. international, 'sub' means under, e.g. submarine. In addition to true prefixes, Spelling Bee includes groups of letters which are found at the beginning of a number of words.  This is to help you practice spelling groups of words which look similar but are spelled slightly differently."
+    },
+    {
+        "name": "suffixes",
+        "years": [],
+        "description": "Suffixes are groups of letters which are found at the end of a word. Some suffixes change the meaning of a word.  For example: -ation is added to the end of some verbs to form a noun, so 'prepare' becomes 'preparation'; -ly turns some adjectives into adverbs, so 'sad' becomes 'sadly'.  In addition to true suffixes, Spelling Bee includes groups of letters which are found at the end of a number of words.  This is to help you practice spelling groups of words which look similar but are spelled slightly differently."
+    },
+    {
+        "name": "medials",
+        "years": [],
+        "description": "Medials are letters or groups of letters which are found in the middle of a word. A letter may sound different in the middle of a word to at the end of a word.  For example, compare how you pronounce 'y' in myth and in stay. to  Spelling Bee includes words containing various medials, to help you practice spelling groups of words which have similar characteristics but are spelled differently."
+    },
+    {
+        "name": "homophones",
+        "years": [],
+        "description": "Homophones are two or more words that sound the same but have different meanings and often different spellings. For example, 'rain', 'rein' and 'reign' are pronounced the same but you might need an umbrella for the first one, a horse for the second and the third is what a king or queen does!"
+    },
+    {
+        "name": "freestyle",
+        "years": [],
+        "description": "Freestyle words are not in any of the other categories, i.e. they don't contain any prefixes, suffixes or medials and they aren't homophones."
+    },
+    {
+        "name": "words",
+        "years": [],
+        "description": "This is a complete list of all the words for this year covering all categories: prefixes, suffixes, medials, homophones and freestyle."
+    }
+]

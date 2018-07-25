@@ -4,17 +4,14 @@ const mongoose = require('mongoose');
 const supertest = require('supertest')(server);
 const expect = require('chai').expect;
 const { seed } = require('../seed/seed');
-const { testWords, testPrefixes, testSuffixes, testMedials, testHomophones } = require('../seed/data/testData');
-const { wordsMaker, categoriesMaker } = require('../seed/dataMakers');
-const wordsToSeed = wordsMaker(testWords, testPrefixes, testSuffixes, testMedials);
-const categoriesToSeed = categoriesMaker(testPrefixes, testSuffixes, testMedials, testHomophones);
+const { testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords } = require('../seed/data/testData');
 
 describe('API Spelling Bee', () => {
-    let wordDocs, categoriesDocs;
+    let yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs;
     beforeEach(() => {
-        return seed(wordsToSeed, categoriesToSeed)
+        return seed(testYears, testCategories, testPrefixes, testSuffixes, testMedials, testWords)
             .then(data => {
-                [wordDocs, categoriesDocs] = data;
+                [yearDocs, categoriesDocs, prefixesDocs, suffixesDocs, medialsDocs, wordsDocs] = data;
             });
     });
     after(() => {
@@ -45,6 +42,87 @@ describe('API Spelling Bee', () => {
         });
     });
 
+    describe('API requests to /api/years', () => {
+        it('GETs all years from /api/years', () => {
+            return supertest
+                .get('/api/years')
+                .expect(200)
+                .then(res => {
+                    const { years } = res.body;
+                    expect(years.length).to.equal(6);
+                    expect(years[2].year).to.equal(yearDocs[2].year);
+                    expect(years[2]).to.have.keys('_id', 'year');
+                    expect(years[2]._id).to.equal(`${yearDocs[2]._id}`);
+                });
+        });
+        it('GETs a year from /api/years/:year', () => {
+            return supertest
+                .get('/api/years/3')
+                .expect(200)
+                .then(res => {
+                    const { year } = res.body;
+                    expect(year.length).to.equal(1);
+                    expect(year[0].year).to.equal(yearDocs[2].year);
+                    expect(year[0].year).to.equal(3);
+                    expect(year[0]).to.have.keys('_id', 'year');
+                    expect(year[0]._id).to.equal(`${yearDocs[2]._id}`);
+                });
+        });
+    });
+
+    describe('API requests to /api/categories', () => {
+        it('GETs all categories from /api/categories', () => {
+            return supertest
+                .get('/api/categories')
+                .expect(200)
+                .then(res => {
+                    const { categories } = res.body;
+                    expect(categories.length).to.equal(6);
+                    expect(categories[2].description).to.equal(categoriesDocs[2].description);
+                    expect(categories[2]).to.have.keys('_id', 'years', 'description', 'name');
+                    expect(categories[2]._id).to.equal(`${categoriesDocs[2]._id}`);
+                });
+        });
+        it('GETs all the categories for a year from /api/categories?year={year}', () => {
+            return supertest
+                .get('/api/categories')
+                .query({year: 3})
+                .expect(200)
+                .then(res => {
+                    const { categories } = res.body;
+                    expect(categories.length).to.equal(6);
+                    expect(categories[0].name).to.equal(categoriesDocs[0].name);
+                    expect(categories[0].description).to.equal(categoriesDocs[0].description);
+                    expect(categories[0]).to.have.keys('_id', 'years', 'name', 'description');
+                    expect(categories[0]._id).to.equal(`${categoriesDocs[0]._id}`);
+                    // expect(categories[0].years[0]._id).to.equal(`${categoriesDocs[0].years[0]}`);
+                    expect(categories[0].years[0].year).to.equal(3);
+                });
+            });
+        it('returns an appropriate error if an non-existent year is requested at /api/categories?year={year}', () => {
+            return supertest
+                .get('/api/categories')
+                .query({year: 21})
+                .expect(404)
+                .then(res => {
+                    expect(res.body.error).to.equal('year 21 not found');
+                });
+        });
+        it('GETs a category from /api/categories/:categories', () => {
+            return supertest
+                .get('/api/categories/suffixes')
+                .expect(200)
+                .then(res => {
+                    const { category } = res.body;
+                    expect(category.length).to.equal(1);
+                    expect(category[0].name).to.equal(categoriesDocs[1].name);
+                    expect(category[0].description).to.equal(categoriesDocs[1].description);
+                    expect(category[0]).to.have.keys('_id', 'years', 'name', 'description');
+                    expect(category[0]._id).to.equal(`${categoriesDocs[1]._id}`);
+                });
+        });
+    });
+
     describe('API requests to /api/words', () => {
         it('GETs all words from /api/words', () => {
             return supertest
@@ -53,9 +131,13 @@ describe('API Spelling Bee', () => {
                 .then(res => {
                     const { words } = res.body;
                     expect(words.length).to.equal(54);
-                    expect(words[0].word).to.equal(wordDocs[0].word);
-                    expect(words[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(words[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(words[10].word).to.equal(wordsDocs[10].word);
+                    expect(words[10]._id).to.equal(`${wordsDocs[10]._id}`);
+                    expect(words[10]).to.have.keys('_id', 'word', 'partials', 'years');
+                    expect(words[10].partials[0]).to.have.keys('_id', 'letters', 'categories');
+                    expect(words[10].partials[0].letters).to.equal('ea');
+                    expect(words[10].partials[0].categories[0].name).to.equal('medials');
+                    expect(words[10].years[0].year).to.equal(3);
                 });
         });
         it('returns a 404 message if /words is not requested at /api', () => {
@@ -66,16 +148,9 @@ describe('API Spelling Bee', () => {
                     expect(res.body.message).to.equal('404 not found');
                 });
         });
-        it('returns a 404 message if one of prefixes/suffixes/medials/homophones/freestyle is not requested at /api/words', () => {
-            return supertest
-                .get('/api/words/banana')
-                .expect(404)
-                .then(res => {
-                    expect(res.body.message).to.equal('404 not found');
-                });
-        });
-        it('POSTS a new word to /api/words', () => {
-            const newWord = { word: 'banana', categories: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+    
+        it('POSTS a new word to /api/words - empty partials array', () => {
+            const newWord = { word: 'banana', partials: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -84,8 +159,7 @@ describe('API Spelling Bee', () => {
                 .then(res => {
                     const { new_word } = res.body;
                     expect(new_word.word).to.equal('banana');
-                    expect(Object.keys(new_word.categories).length).to.equal(4);
-                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
                 })
                 .then(() => supertest
                     .get('/api/words')
@@ -95,8 +169,8 @@ describe('API Spelling Bee', () => {
                         expect(words[54].word).to.equal('banana');
                     }));
         });
-        it('casts a single string in the the categories object into an array containing the string', () => {
-            const newWord = { word: 'banana', categories: { prefixes: 'ban', suffixes: ['ana'], medials: [], homophones: [] } };
+        it('POSTS a new word to /api/words - partial in partials array', () => {
+            const newWord = { word: 'antiauthoritarian', partials: ['anti'], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -104,29 +178,54 @@ describe('API Spelling Bee', () => {
                 .expect(201)
                 .then(res => {
                     const { new_word } = res.body;
-                    expect(new_word.word).to.equal('banana');
-                    expect(Object.keys(new_word.categories).length).to.equal(4);
-                    expect(new_word.categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    expect(new_word.word).to.equal('antiauthoritarian');
+                    expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
                 })
                 .then(() => supertest
                     .get('/api/words')
                     .then(res => {
                         const { words } = res.body;
                         expect(words.length).to.equal(55);
-                        expect(words[54].word).to.equal('banana');
+                        expect(words[54].word).to.equal('antiauthoritarian');
                     }));
         });
-        it('returns with a 400 error message if an invalid key is passed in the body of the post request', () => {
-            const newWord = { word: 'banana', pineapple: { prefixes: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+        it('returns an appropriate error to a post request to /api/words - if the requested partial does not exist in the partials collection', () => {
+            const newWord = { word: 'antiauthoritarian', partials: ['jemima'], years: [3, 4] };
+            return supertest
+                .post('/api/words')
+                .set('Accept', 'application/json')
+                .send(newWord)
+                .expect(201)
+                .then(res => {
+                    const { new_word } = res.body;
+                    expect(new_word.word).to.equal('antiauthoritarian');
+                    expect(new_word).to.have.keys('word', 'partials', 'years', '_id', '__v');
+                })
+                .then(() => supertest
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(55);
+                        expect(words[54].word).to.equal('antiauthoritarian');
+                    }));
+        });
+        it('returns an appropriate error if an string is passed to partials instead of an array', () => {
+            const newWord = { word: 'antidiluvial', partials: 'anti', years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
                 .send(newWord)
                 .expect(400)
-                .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
+                .then(res => expect(res.body.error).to.equal('please ensure partials & years are contained in an array'))
+                .then(() => supertest
+                    .get('/api/words')
+                    .then(res => {
+                        const { words } = res.body;
+                        expect(words.length).to.equal(54);
+                    }));
         });
-        it('returns with a 400 error message if an invalid key is passed as a category in the body of the post request', () => {
-            const newWord = { word: 'banana', categories: { pineapple: ['ban'], suffixes: ['ana'], medials: [], homophones: [] } };
+        it('returns with a 400 error message if an invalid key is passed in the body of the post request', () => {
+            const newWord = { word: 'banana', pineapple: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -135,7 +234,7 @@ describe('API Spelling Bee', () => {
                 .then(res => expect(res.body.error).to.equal('pineapple is an invalid key'));
         });
         it('returns with a 400 error message if a duplicate word is passed in the body of a post request', () => {
-            const newAppleWord = { word: 'apple', categories: { prefixes: [], suffixes: [], medials: [], homophones: [] } };
+            const newAppleWord = { word: 'apple', partials: [], years: [3, 4] };
             return supertest
                 .post('/api/words')
                 .set('Accept', 'application/json')
@@ -186,31 +285,17 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/words/freestyle', () => {
-        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
-            return supertest
-                .get('/api/words/freestyle')
-                .expect(200)
-                .then(res => {
-                    const { freestyle } = res.body;
-                    expect(freestyle.length).to.equal(1);
-                    expect(freestyle[0].word).to.equal('apple');
-                    expect(freestyle[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(freestyle[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                });
-        });
-    });
-
     describe('API requests to /api/prefixes', () => {
         it('GETs the list of prefixes from /api/prefixes', () => {
             return supertest
                 .get('/api/prefixes')
                 .expect(200)
                 .then(res => {
-                    const { prefixes } = res.body;
-                    expect(prefixes[0].letters.length).to.equal(5);
-                    expect(prefixes[0].letters[0]).to.equal('im');
-                    expect(prefixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    const { prefixes, partials } = res.body;
+                    expect(prefixes.name).to.equal('prefixes');
+                    expect(prefixes.years.length).to.equal(2);
+                    expect(partials[0].letters).to.equal('im');
+                    expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
         });
         it('GETs all words from /api/prefixes which match a query string', () => {
@@ -219,11 +304,10 @@ describe('API Spelling Bee', () => {
                 .query({ prefix: 'pos' })
                 .expect(200)
                 .then(res => {
-                    const { prefixes } = res.body;
-                    expect(prefixes.length).to.equal(4);
-                    expect(prefixes[0].word).to.equal('position');
-                    expect(prefixes[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(prefixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('position');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "prefix"', () => {
@@ -248,10 +332,11 @@ describe('API Spelling Bee', () => {
                 .get('/api/suffixes')
                 .expect(200)
                 .then(res => {
-                    const { suffixes } = res.body;
-                    expect(suffixes[0].letters.length).to.equal(5);
-                    expect(suffixes[0].letters[0]).to.equal('ure');
-                    expect(suffixes[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    const { suffixes, partials } = res.body;
+                    expect(suffixes.name).to.equal('suffixes');
+                    expect(suffixes.years.length).to.equal(2);
+                    expect(partials[0].letters).to.equal('ure');
+                    expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
         });
         it('GETs all words from /api/suffixes which match the query string', () => {
@@ -260,11 +345,10 @@ describe('API Spelling Bee', () => {
                 .query({ suffix: 'ly' })
                 .expect(200)
                 .then(res => {
-                    const { suffixes } = res.body;
-                    expect(suffixes.length).to.equal(4);
-                    expect(suffixes[0].word).to.equal('comically');
-                    expect(suffixes[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(suffixes[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('comically');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "suffix"', () => {
@@ -279,7 +363,9 @@ describe('API Spelling Bee', () => {
                 .get('/api/suffixes')
                 .query({ suffix: 'banana' })
                 .expect(404)
-                .then(res => expect(res.body.error).to.equal('suffix banana not found'));
+                .then(res => {
+                    expect(res.body.error).to.equal('suffix banana not found');
+                });
         });
     });
 
@@ -289,10 +375,11 @@ describe('API Spelling Bee', () => {
                 .get('/api/medials')
                 .expect(200)
                 .then(res => {
-                    const { medials } = res.body;
-                    expect(medials[0].letters.length).to.equal(3);
-                    expect(medials[0].letters[0]).to.equal('sc');
-                    expect(medials[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    const { medials, partials } = res.body;
+                    expect(medials.name).to.equal('medials');
+                    expect(medials.years.length).to.equal(2);
+                    expect(partials[0].letters).to.equal('sc');
+                    expect(partials[0]).to.have.keys('_id', 'letters', 'categories', 'description', 'years');
                 });
         });
         it('GETs all words from /api/medials which match the query string', () => {
@@ -301,11 +388,12 @@ describe('API Spelling Bee', () => {
                 .query({ medial: 'sc' })
                 .expect(200)
                 .then(res => {
-                    const { medials } = res.body;
-                    expect(medials.length).to.equal(4);
-                    expect(medials[0].word).to.equal('crescent');
-                    expect(medials[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(medials[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
+                    const { words } = res.body;
+                    expect(words.length).to.equal(4);
+                    expect(words[0].word).to.equal('crescent');
+                    expect(words[0]).to.have.keys('_id', 'word', 'partials', 'years');
+                    expect(words[0].partials[0].letters).to.equal('sc');
+                    expect(words[0].years[0].year).to.equal(3);
                 });
         });
         it('returns a 400 message when the user inputs a query string where the key is not "medial"', () => {
@@ -324,44 +412,17 @@ describe('API Spelling Bee', () => {
         });
     });
 
-    describe('API requests to api/homophones', () => {
-        it('GETs the list of homophones from /api/words/homophones', () => {
+    describe('API requests to api/freestyle', () => {
+        it('GETs all words which have empty arrays for prefixes, suffixes, medials & homophones from api/words/freestyle', () => {
             return supertest
-                .get('/api/homophones')
+                .get('/api/freestyle')
                 .expect(200)
                 .then(res => {
-                    const { homophones } = res.body;
-                    expect(homophones[0].letters.length).to.equal(14);
-                    expect(homophones[0].letters[0]).to.equal('accept');
-                    expect(homophones[0]).to.have.keys('_id', 'letters', 'category', 'description');
+                    const { freestyle } = res.body;
+                    expect(freestyle.length).to.equal(12);
+                    expect(freestyle[0].word).to.equal('accept');
+                    expect(freestyle[0]).to.have.keys('_id', 'word', 'partials', 'years');
                 });
-        });
-        it('GETs all words from api/words/homophones which match query string', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ homophone: 'brake' })
-                .expect(200)
-                .then(res => {
-                    const { homophones } = res.body;
-                    expect(homophones.length).to.equal(1);
-                    expect(homophones[0].word).to.equal('break');
-                    expect(homophones[0]).to.have.keys('_id', 'word', 'categories');
-                    expect(homophones[0].categories).to.have.keys('suffixes', 'prefixes', 'medials', 'homophones');
-                });
-        });
-        it('returns a 400 message when the user inputs a query string where the key is not "homophone"', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ banana: 'brake' })
-                .expect(400)
-                .then(res => expect(res.body.error).to.equal('banana is an invalid query string key - valid format is "?homophone=brake"'));
-        });
-        it('returns a 404 message when the user inputs a homophone not contained in the database', () => {
-            return supertest
-                .get('/api/homophones')
-                .query({ homophone: 'banana' })
-                .expect(404)
-                .then(res => expect(res.body.error).to.equal('homophone banana not found'));
         });
     });
 
